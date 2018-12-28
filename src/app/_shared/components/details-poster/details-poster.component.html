@@ -1,9 +1,11 @@
 <div class="container-fluid details">
   <div class="row">
     <div class="col-sm-12 col-md-4 col-lg-3">
-      <div class="">
+      <div class="text-center">
         <img class="card-img-top" style="height: 20rem;" src="https://m.media-amazon.com/images/M/MV5BZDczYzNhMDMtNmQ2Ni00ZjcwLWI1MDQtMWI1YWVkNjkzN2NhXkEyXkFqcGdeQXVyNDMzMzI5MjM@._V1_SY1000_CR0,0,648,1000_AL_.jpg"
-          alt="Card image cap">         
+          alt="Card image cap">
+        <br>
+        <button type="button" (click)="buyClick(stepper)" class="btn btn-secondary">Buy Ticket</button>
       </div>
     </div>
     <div class="col-sm-12 col-md-7 col-lg-8">
@@ -31,9 +33,29 @@
           that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
         </p>
       </div>
-    </div>    
-  </div>    
+    </div>
+  </div>
 </div>
 
-
-
+<mat-horizontal-stepper #stepper [ngStyle]="{'display': style}">
+    <mat-step editable="false">
+      <ng-template matStepLabel><b>Movie</b></ng-template>
+      <button mat-button matStepperNext #foward>Next</button>       
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel><b>Session</b></ng-template>
+      Content 2    
+     </mat-step>
+     <mat-step>
+        <ng-template matStepLabel><b>Tickets</b></ng-template>
+      Content 3    
+     </mat-step>
+     <mat-step>
+        <ng-template matStepLabel><b>Resume</b></ng-template>
+      Content 4    
+     </mat-step>
+     <mat-step>
+        <ng-template matStepLabel><b>Purchase</b></ng-template>
+      Content 5    
+     </mat-step>
+</mat-horizontal-stepper>

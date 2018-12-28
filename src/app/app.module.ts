@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { DetailsPosterComponent, DetailsPremiereComponent } from './_shared';
-import { StepsComponent } from './_shared/components/steps/steps.component';
+import { MatStepperModule, MatIconModule} from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+
 
 @NgModule({
   declarations: [
@@ -14,14 +16,17 @@ import { StepsComponent } from './_shared/components/steps/steps.component';
     HomeComponent,
     DetailsPosterComponent,
     DetailsPremiereComponent,
-    NotfoundComponent,
-    StepsComponent
+    NotfoundComponent,   
   ],
   imports: [
     BrowserModule,
     CarouselModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule, 
+    MatStepperModule,
+    MatIconModule,       
   ],
+  entryComponents: [],
   providers: [],
   bootstrap: [AppComponent]
 })
