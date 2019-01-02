@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatStepper} from '@angular/material';
-import { getContext } from '@angular/core/src/render3/context_discovery';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { MatStepper } from '@angular/material';
+import { Movie } from '../../models';
 
 @Component({
   selector: 'app-details-poster',
@@ -9,19 +9,18 @@ import { getContext } from '@angular/core/src/render3/context_discovery';
 })
 export class DetailsPosterComponent implements OnInit {
   @ViewChild('stepper') stepper: MatStepper;
-  showSteps = false;
+  @Input() movie: Movie;
+
   style = 'none';
 
-  constructor( ) { }
+  constructor() { }
 
-  ngOnInit() {
-    
+  ngOnInit() { 
+    console.log(this.movie);
   }
 
-  buyClick(){    
-      this.showSteps = true;
-      this.style = 'block';
-      this.stepper.selectedIndex = 1;    
-  }  
-
+  buyClick() {
+    this.style = 'block';
+    this.stepper.selectedIndex = 1;
+  }
 }

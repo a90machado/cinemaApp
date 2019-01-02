@@ -8,6 +8,7 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { DetailsPosterComponent, DetailsPremiereComponent } from './_shared';
 import { MatStepperModule, MatIconModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -23,11 +24,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     CarouselModule.forRoot(),
     AppRoutingModule,
     BrowserAnimationsModule, 
+    HttpClientModule,
     MatStepperModule,
     MatIconModule,       
   ],
   entryComponents: [],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

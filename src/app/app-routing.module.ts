@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'detailsposter',
-    component: DetailsPosterComponent
+    component: DetailsPosterComponent, 
   },
   {
     path: 'detailspremiere',
