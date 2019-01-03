@@ -21,12 +21,11 @@ export class HomeComponent implements OnInit {
     this.movies$ = this._dataService.movies$;
    }
 
-  ngOnInit() {   
-  }  
+  ngOnInit() { }  
 
   openDetails(movie){
-    this._router.navigate(['detailsposter', movie.id]);
-    // this.selectedMovie.emit(movie);
+    //this.selectedMovie.emit(movie); 
+     
+    this._router.navigate(['detailsposter',movie.$routeParams.id]);       
   }
-
 }

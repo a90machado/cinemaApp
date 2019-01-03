@@ -11,5 +11,5 @@ export class MovieService {
   public getMovies(){
     return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/movie');
   }
-
+  
 }

@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatStepper } from '@angular/material';
 import { Movie } from '../../models';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { DataService } from '../../services';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
+
 
 @Component({
   selector: 'app-details-poster',
@@ -10,13 +14,28 @@ import { Movie } from '../../models';
 export class DetailsPosterComponent implements OnInit {
   @ViewChild('stepper') stepper: MatStepper;
   @Input() movie: Movie;
+  selectedMovie: Movie;
 
   style = 'none';
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private dataService: DataService) { }
 
-  ngOnInit() { 
-    console.log(this.movie);
+  selectedId: number;
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(
+      params => {
+        this.selectedId = +params.get('id');
+      }
+    );
+
+    if (this.dataService.getMovieByID(this.selectedId)  ){
+      this.selectedMovie = this.dataService.getMovieByID(this.selectedId); 
+    } else {
+      this.router.navigate(['/notfound']);
+    }  
   }
 
   buyClick() {

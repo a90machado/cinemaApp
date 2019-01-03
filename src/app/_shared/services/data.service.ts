@@ -22,11 +22,14 @@ export class DataService {
 
   public getMovieByID(id){
     this.movies$.pipe(
-      map((data: any)=>{
-       if(id === data.id){
-        return data;
-       }
+      map((data: any[])=>{
+        for (let index = 0; index < data.length; index++) {
+          if(id === data[index].id){
+            return data;
+           }        
+        }       
       })
     );
+    return null;
   }
 }
