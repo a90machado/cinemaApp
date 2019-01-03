@@ -34,7 +34,7 @@
     <mat-step>
       <ng-template matStepLabel><b>Session</b></ng-template>
       <form>
-        
+        <select ng-model='selectedSchedule' ng-options="x for x schedules"></select>
       </form>
     </mat-step>
     <mat-step>
