@@ -13,8 +13,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   noPause = false;
-  movies$: ReplaySubject<Movie[]>;
-  @Output() selectedMovie: EventEmitter<any> = new EventEmitter<any>();
+  movies$: ReplaySubject<Movie[]>;  
 
   constructor(  private _dataService: DataService,
                 private _router: Router ) {
@@ -23,9 +22,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() { }  
 
-  openDetails(movie){
-    //this.selectedMovie.emit(movie); 
-     
-    this._router.navigate(['detailsposter',movie.$routeParams.id]);       
+  openDetails(movie){       
+    this._router.navigate(['detailsposter',movie.id]);       
   }
 }

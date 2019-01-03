@@ -6,9 +6,11 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { DetailsPosterComponent, DetailsPremiereComponent } from './_shared';
-import { MatStepperModule, MatIconModule} from '@angular/material';
+import { MatStepperModule, MatIconModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -26,10 +28,14 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule, 
     HttpClientModule,
     MatStepperModule,
-    MatIconModule,       
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,       
   ],
   entryComponents: [],
-  providers: [ ],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

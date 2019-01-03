@@ -10,14 +10,14 @@
     <div class="col-sm-12 col-md-7 col-lg-8">
       <div class="">
         <h1>{{ selectedMovie.title }}</h1>
-        <p>{{ selectedMovie.minimumAge }}</p>
+        <h5>M{{ selectedMovie.minimumAge }}</h5>
         <hr>
         <p><b>Duration: </b>{{ selectedMovie.duration }}</p>
-        <p><b>Release Date: </b>{{ selectedMovie.releaseDate }}</p>
-        <p><b>Director: </b>{{ selectedMovie.director}}</p>
+        <p><b>Release Date: </b>{{ formatDate }}</p>
+        <p><b>Director: </b>{{ selectedMovie.director }}</p>
         <p><b>Cast: </b>{{ selectedMovie.cast}}</p>
         <hr>
-        <p><b>Synopsis: </b> {{ selectedMovie.synopsis}}
+        <p><b>Synopsis: </b> {{ selectedMovie.synopsis }}
         </p>
       </div>
     </div>
@@ -26,26 +26,34 @@
 
 <div [ngStyle]="{'display': style}">
   <hr>
-  <mat-horizontal-stepper #stepper>
-    <mat-step editable="false">
-      <ng-template matStepLabel><b>Movie</b></ng-template>
-      <button mat-button matStepperNext>Next</button>
+  <mat-horizontal-stepper #stepper >
+    <mat-step  editable="false">
+      <ng-template matStepLabel><b>Movie</b></ng-template>       
+        <label for="movie">{{ selectedMovie.title }}</label>        
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Session</b></ng-template>
-      Content 2
+      <form>
+        
+      </form>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Tickets</b></ng-template>
-      Content 3
+      <form>
+        
+      </form>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Resume</b></ng-template>
-      Content 4
+      <form>
+        
+      </form>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Purchase</b></ng-template>
-      Content 5
+      <form>
+        
+      </form>
     </mat-step>
   </mat-horizontal-stepper>
 </div>

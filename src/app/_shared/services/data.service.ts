@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Movie } from '../models';
 import { MovieService } from './movie.service';
 import { ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators/';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
   public movies$: ReplaySubject<any[]> = new ReplaySubject(1);
+  private movies: any[];
 
   constructor(private _movieService: MovieService) {
     this.updateMovies();
@@ -17,19 +17,15 @@ export class DataService {
   public updateMovies() {
     this._movieService.getMovies().subscribe((res: any) => {
       this.movies$.next(res);
+      this.movies = res;
     });
   }
 
-  public getMovieByID(id){
-    this.movies$.pipe(
-      map((data: any[])=>{
-        for (let index = 0; index < data.length; index++) {
-          if(id === data[index].id){
-            return data;
-           }        
-        }       
-      })
-    );
-    return null;
+  public getMovieByID(id) {
+    for (const movie of this.movies) {
+      if (movie.id === id) {
+        return movie;
+      }
+    }
   }
 }
