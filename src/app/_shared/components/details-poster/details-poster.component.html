@@ -32,19 +32,34 @@
         <label for="movie">{{ selectedMovie.title }}</label>        
     </mat-step>
     <mat-step>
+      <ng-template matStepLabel><b>Cinema</b></ng-template>
+      <form>
+        dropdown cinemas
+      </form>
+    </mat-step>
+    <mat-step>
       <ng-template matStepLabel><b>Session</b></ng-template>
       <form>
-        <select ng-model='selectedSchedule' ng-options="x for x schedules"></select>
+        <select name="schedules" id="schedules" [(ngModel)]="schedules">
+          <option *ngFor="let schedule of schedules | async" [value]="schedule.id">
+          {{ dataForSelect(schedule.sessionBegin) + ' - ' + dataForSelect(schedule.sessionEnd) }}
+          </option>
+        </select>
+       datepicker 
+       usar o releaseDate e o endDate para definir os display
+       horário do filme constante.
       </form>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel><b>Tickets</b></ng-template>
+      <ng-template matStepLabel><b>Ticket</b></ng-template>
       <form>
-        
+        tipos de bilhetes
+        preço
+        qtd
       </form>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel><b>Resume</b></ng-template>
+      <ng-template matStepLabel><b>Reserve Seat</b></ng-template>
       <form>
         
       </form>
@@ -57,3 +72,4 @@
     </mat-step>
   </mat-horizontal-stepper>
 </div>
+
