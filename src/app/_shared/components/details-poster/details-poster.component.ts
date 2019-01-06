@@ -54,7 +54,7 @@ export class DetailsPosterComponent implements OnInit {
     //GET SCHEDULES 
     this.dataService.getSchedule(this.selectedId);
     this.schedules=this.dataService.schedules$;     
-    console.log(this.schedules);
+
    //GET CINEMAS 
    this.dataService.getCinemas(); 
    this.cinemas=this.dataService.cinemas$
@@ -74,10 +74,18 @@ export class DetailsPosterComponent implements OnInit {
 
   dataForSelect(session){
     
-    if(session%60==0){
+    if(session/60>1 && session%60==0){
       return ((session-session%60)/60)+':00';
-    }else if(session%10!=0 && session%60<10){
-      return (((session-session%60)/60)+':0'+(session%60));
+    }else if(session/60>1 && session%10!=0 && session%60<10){
+      return(((session-session%60)/60)+':0'+(session%60));
+    }else if(session/60==0 && session%10==0  && session%60<10){
+      return '0'+(((session-session%60)/60)+':0'+(session%60));
+    }else if(session/60<1 && session%10!=0  && session%60<10){
+      return '0'+(((session-session%60)/60)+':0'+(session%60));
+    } else if(session/60<1 && session%10!=0  && session%60>10){
+      return '0'+(((session-session%60)/60)+":"+(session%60));
+    }else if(session/60<1 && session%10==0){
+      return '0'+(((session-session%60)/60)+":"+(session%60))+'0';
     }else{
     return (((session-session%60)/60)+':'+(session%60));
     }

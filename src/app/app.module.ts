@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { DatePipe } from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule,       
+    MatInputModule,
+    MatSelectModule       
   ],
   entryComponents: [],
   providers: [DatePipe],
