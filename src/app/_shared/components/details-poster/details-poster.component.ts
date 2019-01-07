@@ -4,9 +4,6 @@ import { Movie } from '../../models';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { DataService } from '../../services';
 import { DatePipe } from '@angular/common';
-import { Schedule } from '../../models/schedule';
-import { Cinema } from '../../models/cinema';
-
 
 
 @Component({
@@ -22,7 +19,9 @@ export class DetailsPosterComponent implements OnInit {
   selectedId: number;
   schedules: any; 
   selectedSchedules: string[]; 
-  cinemas: any; 
+  cinemas: any;
+  tickets: any;
+  header: any[]; 
 
   hoursBegin:Number;
   minutesBegin:Number;
@@ -57,8 +56,12 @@ export class DetailsPosterComponent implements OnInit {
 
    //GET CINEMAS 
    this.dataService.getCinemas(); 
-   this.cinemas=this.dataService.cinemas$
+   this.cinemas=this.dataService.cinemas$;
 
+   //GET TICKETS
+   this.dataService.getTickets();
+   this.tickets=this.dataService.tickets$;
+   this.header=['Type of Ticket', 'Price', 'Amount'];
   }
 
   ngOnInit() { }
@@ -89,6 +92,5 @@ export class DetailsPosterComponent implements OnInit {
     }else{
     return (((session-session%60)/60)+':'+(session%60));
     }
-  }
-      
+  }      
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MovieService } from './movie.service';
 import { ReplaySubject } from 'rxjs';
 import { CinemaService } from './cinema.service';
+import { TicketService } from './ticket.service';
 
 
 @Injectable({
@@ -14,9 +15,12 @@ export class DataService {
   private schedules: any[];
   public cinemas$: ReplaySubject<any[]> = new ReplaySubject(1);
   private cinemas: any[];
+  public tickets$: ReplaySubject<any[]> = new ReplaySubject(1);
+  private tickets: any[];
 
   constructor(private _movieService: MovieService,
-              private _cinemaService: CinemaService) {
+              private _cinemaService: CinemaService,
+              private _ticketService: TicketService) {
     this.updateMovies();
   }
 
@@ -47,6 +51,14 @@ export class DataService {
       this.cinemas$.next(res);
       this.cinemas = res;      
     });
+  }
+
+  public getTickets(){
+  this._ticketService.getTickets().subscribe((res:any) => {
+    this.tickets$.next(res);
+    this.tickets = res;
+  });
+   
   }
 
 }

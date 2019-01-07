@@ -12,7 +12,7 @@
         <h1>{{ selectedMovie.title }}</h1>
         <h5>M{{ selectedMovie.minimumAge }}</h5>
         <hr>
-        <p><b>Duration: </b>{{ selectedMovie.duration }}</p>
+        <p><b>Duration (min.): </b>{{ selectedMovie.duration }}</p>
         <p><b>Release Date: </b>{{ formatDate }}</p>
         <p><b>Director: </b>{{ selectedMovie.director }}</p>
         <p><b>Cast: </b>{{ selectedMovie.cast}}</p>
@@ -43,7 +43,7 @@
       <ng-template matStepLabel><b>Session</b></ng-template>      
         <mat-select name="schedules" id="schedules" [(ngModel)]="schedules" placeholder="Select Schedule">
           <mat-option *ngFor="let schedule of schedules | async" [value]="schedule.id">
-          {{ dataForSelect(schedule.sessionBegin) + ' - ' + dataForSelect(schedule.sessionEnd) }}
+          {{ dataForSelect(schedule.sessionBegin) }}
           </mat-option>
         </mat-select>
        <!-- datepicker 
@@ -51,10 +51,25 @@
        horário do filme constante. -->      
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel><b>Ticket</b></ng-template>     
-        <!-- tipos de bilhetes
-        preço
-        qtd -->     
+      <ng-template matStepLabel><b>Ticket</b></ng-template>
+      <div class="table-responsive">
+          <table class="table" [ngClass]='theme'>
+            <thead>
+              <tr>
+                <th *ngFor="let col of header">
+                  {{col}}
+                </th>               
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of tickets | async">
+                <td *ngFor="let col of header">
+                  {{row[col]}}
+                </td>                     
+              </tr>
+            </tbody>
+          </table>
+      </div>        
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Reserve Seat</b></ng-template>     
