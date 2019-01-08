@@ -62,10 +62,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of tickets | async">
-                <td *ngFor="let col of header">
-                  {{row[col]}}
-                </td>                     
+              <tr *ngFor="let row of typeOfTickets | async">
+                <td>
+                  {{row.typeOfTicket}}
+                </td> 
+                <td>
+                  {{row.priceOfTicket}}
+                </td>
+                <td>
+                  <mat-select name="quantity" id="quantity" [(ngModel)]="quantities"  placeholder="Qty">               
+                    <mat-option *ngFor="let quantity of quantities | async" [value]="quantity">
+                   
+                    </mat-option>
+                  </mat-select> 
+                </td>                         
               </tr>
             </tbody>
           </table>

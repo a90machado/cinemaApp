@@ -4,11 +4,11 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class TicketService {
+export class TypeOfTicketService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getTickets(){
-    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/ticket');
+  public getTypeOfTickets(){
+    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/typeofticket');
   }
 }

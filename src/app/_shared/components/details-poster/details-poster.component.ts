@@ -20,7 +20,7 @@ export class DetailsPosterComponent implements OnInit {
   schedules: any; 
   selectedSchedules: string[]; 
   cinemas: any;
-  tickets: any;
+  typeOfTickets: any;
   header: any[]; 
 
   hoursBegin:Number;
@@ -50,18 +50,18 @@ export class DetailsPosterComponent implements OnInit {
     }
      this.formatDate=this.releaseDateMovie(this.selectedMovie);
      
-    //GET SCHEDULES 
-    this.dataService.getSchedule(this.selectedId);
-    this.schedules=this.dataService.schedules$;     
+   //GET SCHEDULES 
+   this.dataService.getSchedule(this.selectedId);
+   this.schedules=this.dataService.schedules$;     
 
    //GET CINEMAS 
    this.dataService.getCinemas(); 
    this.cinemas=this.dataService.cinemas$;
 
    //GET TICKETS
-   this.dataService.getTickets();
-   this.tickets=this.dataService.tickets$;
-   this.header=['Type of Ticket', 'Price', 'Amount'];
+   this.dataService.getTypeOfTickets();
+   this.typeOfTickets=this.dataService.typeOfTickets$;
+   this.header=['Type of Ticket', 'Price ($)', 'Amount'];
   }
 
   ngOnInit() { }
