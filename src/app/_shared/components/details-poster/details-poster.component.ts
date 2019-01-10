@@ -21,7 +21,13 @@ export class DetailsPosterComponent implements OnInit {
   selectedSchedules: string[]; 
   cinemas: any;
   typeOfTickets: any;
-  header: any[]; 
+  header: any[];
+  schedulesToShow: any;
+  
+  currentDate:number;
+  currentDay:string;
+  currentMonth: string;
+  currentYear:string;
 
   hoursBegin:Number;
   minutesBegin:Number;
@@ -42,7 +48,7 @@ export class DetailsPosterComponent implements OnInit {
       }
     );  
 
-    //GET PATH AND DISPLAY WITH MOVIE ID
+   //GET PATH AND DISPLAY WITH MOVIE ID
     if (this.dataService.getMovieByID(this.selectedId)) {
       this.selectedMovie = this.dataService.getMovieByID(this.selectedId);
     } else {
@@ -52,13 +58,14 @@ export class DetailsPosterComponent implements OnInit {
      
    //GET SCHEDULES 
    this.dataService.getSchedule(this.selectedId);
-   this.schedules=this.dataService.schedules$;     
+   this.schedules=this.dataService.schedules$;
+   this.getSchedulesToShow()     
 
    //GET CINEMAS 
-   this.dataService.getCinemas(); 
+   this.dataService.getCinemas(this.selectedId); 
    this.cinemas=this.dataService.cinemas$;
 
-   //GET TICKETS
+   //GET TYPE OF TICKETS
    this.dataService.getTypeOfTickets();
    this.typeOfTickets=this.dataService.typeOfTickets$;
    this.header=['Type of Ticket', 'Price ($)', 'Amount'];
@@ -92,5 +99,19 @@ export class DetailsPosterComponent implements OnInit {
     }else{
     return (((session-session%60)/60)+':'+(session%60));
     }
-  }      
+  }
+
+  getSchedulesToShow(){    
+    this.currentDate=Date.now();
+    
+    this.currentDay=this.datepipe.transform( this.currentDate, 'dd');
+    this.currentMonth=this.datepipe.transform(this.currentDate, 'MM');
+    this.currentYear=this.datepipe.transform(this.currentDate, 'yyyy');
+   
+    this.schedules.forEach(element => {
+      if(this.currentYear===element.exibitionDayDTO.year&&this.currentMonth===element.exibitionDayDTO.month&&this.currentDay===element.exibitionDayDTO.day){
+        this.schedulesToShow=element;
+      }
+    });
+  }    
 }

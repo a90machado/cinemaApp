@@ -41,12 +41,12 @@ export class DataService {
   public getSchedule(id) {
     this._movieService.getSchedulefromRoom(id).subscribe((res: any) => {      
       this.schedules$.next(res);        
-      this.schedules = res;      
+      this.schedules = res;  
     });    
   }
   
-  public getCinemas(){
-    this._cinemaService.getCinemas().subscribe((res: any) => {
+  public getCinemas(id){
+    this._cinemaService.getCinemas(id).subscribe((res: any) => {
       this.cinemas$.next(res);
       this.cinemas = res;      
     });

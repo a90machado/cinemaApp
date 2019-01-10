@@ -8,7 +8,7 @@ export class CinemaService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getCinemas(){
-    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/cinema');
+  public getCinemas(id){
+    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/cinema/movie/'+id);
   }
 }

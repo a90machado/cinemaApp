@@ -13,6 +13,6 @@ export class MovieService {
   }  
  
   public getSchedulefromRoom(id){
-    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/movie/room/schedule/'+id)
+    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/movie/room/schedules/'+id)
   }
 }

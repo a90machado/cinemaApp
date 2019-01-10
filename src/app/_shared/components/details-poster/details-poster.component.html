@@ -43,7 +43,7 @@
       <ng-template matStepLabel><b>Session</b></ng-template>      
         <mat-select name="schedules" id="schedules" [(ngModel)]="schedules" placeholder="Select Schedule">
           <mat-option *ngFor="let schedule of schedules | async" [value]="schedule.id">
-          {{ dataForSelect(schedule.sessionBegin) }}
+          {{ dataForSelect(schedulesToShow.sessionBegin) }}
           </mat-option>
         </mat-select>
        <!-- datepicker 
