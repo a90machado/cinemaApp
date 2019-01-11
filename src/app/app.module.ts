@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
+import { SchedulePipe } from './_shared/components/details-poster/schedule.pipe';
 
 
 
@@ -21,7 +22,8 @@ import {MatSelectModule} from '@angular/material/select';
     HomeComponent,
     DetailsPosterComponent,
     DetailsPremiereComponent,
-    NotfoundComponent,   
+    NotfoundComponent,
+    SchedulePipe,   
   ],
   imports: [
     BrowserModule,

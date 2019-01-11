@@ -10,12 +10,10 @@ import { TypeOfTicketService } from './type-of-ticket.service';
 export class DataService {
   public movies$: ReplaySubject<any[]> = new ReplaySubject(1);
   private movies: any[];
-  public schedules$: ReplaySubject<any[]> = new ReplaySubject(1);
-  private schedules: any[];
+  public schedules$: ReplaySubject<any[]> = new ReplaySubject(1);  
   public cinemas$: ReplaySubject<any[]> = new ReplaySubject(1);
-  private cinemas: any[];
   public typeOfTickets$: ReplaySubject<any[]> = new ReplaySubject(1);
-  private typeOfTickets: any[];
+ 
 
   constructor(private _movieService: MovieService,
               private _cinemaService: CinemaService,
@@ -41,21 +39,18 @@ export class DataService {
   public getSchedule(id) {
     this._movieService.getSchedulefromRoom(id).subscribe((res: any) => {      
       this.schedules$.next(res);        
-      this.schedules = res;  
     });    
   }
   
   public getCinemas(id){
     this._cinemaService.getCinemas(id).subscribe((res: any) => {
-      this.cinemas$.next(res);
-      this.cinemas = res;      
+      this.cinemas$.next(res);     
     });
   }
 
   public getTypeOfTickets(){
     this._typeOfTicketService.getTypeOfTickets().subscribe((res:any) => {
      this.typeOfTickets$.next(res);
-      this.typeOfTickets = res;
   });
    
   }

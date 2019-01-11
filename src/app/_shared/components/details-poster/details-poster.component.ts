@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ReplaySubject, Subject } from 'rxjs';
 import { MatStepper } from '@angular/material';
 import { Movie } from '../../models';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
@@ -22,17 +23,15 @@ export class DetailsPosterComponent implements OnInit {
   cinemas: any;
   typeOfTickets: any;
   header: any[];
-  schedulesToShow: any;
+  schedulesToShow: any[];
   
-  currentDate:number;
-  currentDay:string;
+  currentDate: number;
+  currentDay: string;
   currentMonth: string;
-  currentYear:string;
-
-  hoursBegin:Number;
-  minutesBegin:Number;
-  hoursEnd:Number;
-  minutesEnd:Number;
+  currentYear: string;
+  exibitionDay: any;
+  exibitionMonth: any;
+  exibitionYear: any;
 
   style = 'none';
 
@@ -58,8 +57,7 @@ export class DetailsPosterComponent implements OnInit {
      
    //GET SCHEDULES 
    this.dataService.getSchedule(this.selectedId);
-   this.schedules=this.dataService.schedules$;
-   this.getSchedulesToShow()     
+   this.schedules=this.dataService.schedules$; 
 
    //GET CINEMAS 
    this.dataService.getCinemas(this.selectedId); 
@@ -100,18 +98,4 @@ export class DetailsPosterComponent implements OnInit {
     return (((session-session%60)/60)+':'+(session%60));
     }
   }
-
-  getSchedulesToShow(){    
-    this.currentDate=Date.now();
-    
-    this.currentDay=this.datepipe.transform( this.currentDate, 'dd');
-    this.currentMonth=this.datepipe.transform(this.currentDate, 'MM');
-    this.currentYear=this.datepipe.transform(this.currentDate, 'yyyy');
-   
-    this.schedules.forEach(element => {
-      if(this.currentYear===element.exibitionDayDTO.year&&this.currentMonth===element.exibitionDayDTO.month&&this.currentDay===element.exibitionDayDTO.day){
-        this.schedulesToShow=element;
-      }
-    });
-  }    
 }

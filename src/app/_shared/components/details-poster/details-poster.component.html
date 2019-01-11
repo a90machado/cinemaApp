@@ -40,15 +40,23 @@
         </mat-select>      
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel><b>Session</b></ng-template>      
+      <ng-template matStepLabel><b>Session</b></ng-template>     
+
         <mat-select name="schedules" id="schedules" [(ngModel)]="schedules" placeholder="Select Schedule">
-          <mat-option *ngFor="let schedule of schedules | async" [value]="schedule.id">
-          {{ dataForSelect(schedulesToShow.sessionBegin) }}
+          <mat-option *ngFor="let schedule of schedules | async | schedule:0 " [value]="schedule.id">
+          {{ dataForSelect(schedule.sessionBegin) }}
           </mat-option>
         </mat-select>
-       <!-- datepicker 
-       usar o releaseDate e o endDate para definir os display
-       horário do filme constante. -->      
+        <mat-select name="schedules" id="schedules" [(ngModel)]="schedules" placeholder="Select Schedule">
+          <mat-option *ngFor="let schedule of schedules | async | schedule:1 " [value]="schedule.id">
+          {{ dataForSelect(schedule.sessionBegin) }}
+          </mat-option>
+        </mat-select>
+        <mat-select name="schedules" id="schedules" [(ngModel)]="schedules" placeholder="Select Schedule">
+          <mat-option *ngFor="let schedule of schedules | async | schedule:2 " [value]="schedule.id">
+          {{ dataForSelect(schedule.sessionBegin) }}
+          </mat-option>
+        </mat-select>   
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Ticket</b></ng-template>
