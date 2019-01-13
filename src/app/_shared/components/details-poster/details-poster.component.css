@@ -12,3 +12,7 @@ button{
     margin-top: 3rem;    
 }
 
+p{
+    cursor: pointer;
+    text-decoration: underline;
+}

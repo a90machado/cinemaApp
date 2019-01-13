@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { ReplaySubject, Subject } from 'rxjs';
 import { MatStepper } from '@angular/material';
-import { Movie } from '../../models';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { DataService } from '../../services';
 import { DatePipe } from '@angular/common';
-
+import { Movie } from '../..';
 
 @Component({
   selector: 'app-details-poster',
@@ -18,20 +16,18 @@ export class DetailsPosterComponent implements OnInit {
   selectedMovie: Movie;
   formatDate: string;
   selectedId: number;
-  schedules: any; 
-  selectedSchedules: string[]; 
+  schedules: any;
+  exibitionDays: any; 
   cinemas: any;
+  rooms:any;
   typeOfTickets: any;
   header: any[];
-  schedulesToShow: any[];
   
   currentDate: number;
   currentDay: string;
   currentMonth: string;
   currentYear: string;
-  exibitionDay: any;
-  exibitionMonth: any;
-  exibitionYear: any;
+  cinemaId: number;
 
   style = 'none';
 
@@ -39,6 +35,7 @@ export class DetailsPosterComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     public datepipe: DatePipe,
+   
     
     ) {
     this.route.paramMap.subscribe(
@@ -55,13 +52,17 @@ export class DetailsPosterComponent implements OnInit {
     }
      this.formatDate=this.releaseDateMovie(this.selectedMovie);
      
-   //GET SCHEDULES 
-   this.dataService.getSchedule(this.selectedId);
-   this.schedules=this.dataService.schedules$; 
-
    //GET CINEMAS 
    this.dataService.getCinemas(this.selectedId); 
    this.cinemas=this.dataService.cinemas$;
+
+   //GET EXIBITION DAYS
+   this.dataService.getExibitionDayfromRoom(this.selectedId);
+   this.exibitionDays=this.dataService.exibitionDays$;
+
+   //GET SCHEDULES 
+   this.dataService.getSchedule(this.selectedId);   
+   this.schedules=this.dataService.schedules$;     
 
    //GET TYPE OF TICKETS
    this.dataService.getTypeOfTickets();
@@ -98,4 +99,16 @@ export class DetailsPosterComponent implements OnInit {
     return (((session-session%60)/60)+':'+(session%60));
     }
   }
+
+  clickedCinema(cinemaId){
+    this.cinemaId = cinemaId;
+    //GET ROOMS
+   this.dataService.getRooms(this.selectedId,this.cinemaId);
+   this.rooms=this.dataService.rooms$;
+  }
+
+  clickSession(){
+    
+  }
+
 }

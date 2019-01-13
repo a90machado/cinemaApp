@@ -26,77 +26,81 @@
 
 <div [ngStyle]="{'display': style}">
   <hr>
-  <mat-horizontal-stepper #stepper >
-    <mat-step  editable="false">
-      <ng-template matStepLabel><b>Movie</b></ng-template>       
-        <label for="movie">{{ selectedMovie.title }}</label>        
+  <mat-horizontal-stepper #stepper>
+    <mat-step editable="false">
+      <ng-template matStepLabel><b>Movie</b></ng-template>
+      <label for="movie">{{ selectedMovie.title }}</label>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel><b>Cinema</b></ng-template>      
-        <mat-select name="cinemas" id="cinemas" [(ngModel)]="cinemas"  placeholder="Select Cinema">               
-          <mat-option *ngFor="let cinema of cinemas | async" [value]="cinema.id">
+      <ng-template matStepLabel><b>Cinema</b></ng-template>
+      <mat-select name="cinemas" id="cinemas" [(ngModel)]="cinemas" placeholder="Select Cinema">
+        <mat-option *ngFor="let cinema of cinemas | async" (click)="clickedCinema(cinema.id)">
           {{ cinema.name }}
-          </mat-option>
-        </mat-select>      
+        </mat-option>
+      </mat-select>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel><b>Session</b></ng-template>     
-
-        <mat-select name="schedules" id="schedules" [(ngModel)]="schedules" placeholder="Select Schedule">
-          <mat-option *ngFor="let schedule of schedules | async | schedule:0 " [value]="schedule.id">
-          {{ dataForSelect(schedule.sessionBegin) }}
-          </mat-option>
-        </mat-select>
-        <mat-select name="schedules" id="schedules" [(ngModel)]="schedules" placeholder="Select Schedule">
-          <mat-option *ngFor="let schedule of schedules | async | schedule:1 " [value]="schedule.id">
-          {{ dataForSelect(schedule.sessionBegin) }}
-          </mat-option>
-        </mat-select>
-        <mat-select name="schedules" id="schedules" [(ngModel)]="schedules" placeholder="Select Schedule">
-          <mat-option *ngFor="let schedule of schedules | async | schedule:2 " [value]="schedule.id">
-          {{ dataForSelect(schedule.sessionBegin) }}
-          </mat-option>
-        </mat-select>   
+      <ng-template matStepLabel><b>Session</b></ng-template>
+      <div class="table-responsive">
+        <table class="table" [ngClass]='theme'>
+          <thead>
+          </thead>
+          <tbody>
+            <tr *ngFor="let exibitionDay of exibitionDays | async">
+              <td>
+                {{exibitionDay.dayOfWeek}}, Day{{exibitionDay.day}}
+              </td>
+              <td *ngFor="let room of rooms | async">
+                Room {{room.id}}
+              </td>
+              <td>                
+                  <p *ngFor="let schedule of schedules | async" (click)="clickSession()">
+                      {{ dataForSelect(schedule.sessionBegin) }}
+                  </p>      
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Ticket</b></ng-template>
       <div class="table-responsive">
-          <table class="table" [ngClass]='theme'>
-            <thead>
-              <tr>
-                <th *ngFor="let col of header">
-                  {{col}}
-                </th>               
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of typeOfTickets | async">
-                <td>
-                  {{row.typeOfTicket}}
-                </td> 
-                <td>
-                  {{row.priceOfTicket}}
-                </td>
-                <td>
-                  <mat-select name="quantity" id="quantity" [(ngModel)]="quantities"  placeholder="Qty">               
-                    <mat-option *ngFor="let quantity of quantities | async" [value]="quantity">
-                   
-                    </mat-option>
-                  </mat-select> 
-                </td>                         
-              </tr>
-            </tbody>
-          </table>
-      </div>        
+        <table class="table" [ngClass]='theme'>
+          <thead>
+            <tr>
+              <th *ngFor="let col of header">
+                {{col}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of typeOfTickets | async">
+              <td>
+                {{row.typeOfTicket}}
+              </td>
+              <td>
+                {{row.priceOfTicket}}
+              </td>
+              <td>
+                <mat-select name="quantity" id="quantity" [(ngModel)]="quantities" placeholder="Qty">
+                  <mat-option *ngFor="let quantity of quantities | async" [value]="quantity">
+
+                  </mat-option>
+                </mat-select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel><b>Reserve Seat</b></ng-template>     
-      
+      <ng-template matStepLabel><b>Reserve Seat</b></ng-template>
+
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Purchase</b></ng-template>
-      
+
     </mat-step>
   </mat-horizontal-stepper>
 </div>
-
