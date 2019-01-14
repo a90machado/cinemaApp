@@ -6,16 +6,17 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ScheduleDayPipe implements PipeTransform {
 
   transform(schedules: any[], exibitionDay: any): any {
-    
+
     var result = []
+    if (schedules !== null) {
+      for (let schedule of schedules) {
 
-    for (let schedule of schedules) {
+        if (schedule.exibitionDayDTO.id == exibitionDay.id) {
+          result.push(schedule);
+        }
 
-      if(schedule.exibitionDayDTO.id==exibitionDay.id){
-        result.push(schedule);
       }
-
-     }
+    }
     return result;
   }
 }

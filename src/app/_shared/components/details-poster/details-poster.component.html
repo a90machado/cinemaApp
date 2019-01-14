@@ -4,7 +4,13 @@
       <div class="text-center">
         <img class="card-img-top" style="height: 20rem;" src="{{ selectedMovie.image }}" alt="Card image cap">
         <br>
-        <button type="button" (click)="buyClick(stepper)" class="btn btn-secondary">Buy Ticket</button>
+        <div>
+          <button type="button" [ngStyle]="{'display': block}" (click)="buyClick(stepper)" class="btn btn-secondary">Buy
+            Ticket</button>
+        </div>
+        <div class="text-center">
+          <button type="button" id="btnReset" [ngStyle]="{'display': style}" (click)="resetClick(stepper)" class="btn btn-secondary">Reset</button>
+        </div>
       </div>
     </div>
     <div class="col-sm-12 col-md-7 col-lg-8">
@@ -53,10 +59,10 @@
               <td *ngFor="let room of rooms | async">
                 Room {{room.id}}
               </td>
-              <td>         
-                  <p *ngFor="let scheduleDay of schedules | async | scheduleDay:exibitionDay" (click)="clickSession(scheduleDay.id)">
-                      {{ dataForSelect(scheduleDay.sessionBegin) }}
-                  </p>     
+              <td>
+                <p id="pSchedule" *ngFor="let scheduleDay of schedules | async | scheduleDay:exibitionDay" (click)="clickSession(scheduleDay.id)">
+                  {{ dataForSelect(scheduleDay.sessionBegin) }}
+                </p>
               </td>
             </tr>
           </tbody>
@@ -80,12 +86,12 @@
                 {{row.typeOfTicket}}
               </td>
               <td>
-                {{row.priceOfTicket}}
+                {{row.priceOfTicket}} $
               </td>
               <td>
                 <mat-select name="quantity" id="quantity" placeholder="Qty">
                   <mat-option *ngFor="let quantity of quantities" (click)=" clickQuantity(quantity,row.id)">
-                   {{quantity}}
+                    {{quantity}}
                   </mat-option>
                 </mat-select>
               </td>
@@ -96,7 +102,7 @@
             </tr>
           </tbody>
         </table>
-        <button (click)="clickNext()">Next</button>
+        <button ng-disabled="disabled"  (click)="clickNext()">Next</button>
       </div>
     </mat-step>
     <mat-step>

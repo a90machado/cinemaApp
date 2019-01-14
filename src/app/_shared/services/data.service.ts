@@ -13,19 +13,19 @@ import { ScheduleService } from './schedule.service';
 export class DataService {
   public movies$: ReplaySubject<any[]> = new ReplaySubject(1);
   private movies: any[];
-  public schedules$: ReplaySubject<any[]> = new ReplaySubject(1);  
+  public schedules$: ReplaySubject<any[]> = new ReplaySubject(1);
   public cinemas$: ReplaySubject<any[]> = new ReplaySubject(1);
   public typeOfTickets$: ReplaySubject<any[]> = new ReplaySubject(1);
   public exibitionDays$: ReplaySubject<any[]> = new ReplaySubject(1);
   public rooms$: ReplaySubject<any[]> = new ReplaySubject(1);
-  public availableSeats$: ReplaySubject<any[]> = new ReplaySubject(1); 
+  public availableSeats$: ReplaySubject<any[]> = new ReplaySubject(1);
 
   constructor(private _movieService: MovieService,
-              private _cinemaService: CinemaService,
-              private _typeOfTicketService: TypeOfTicketService,
-              private _exibitionDaysService: ExibitionDayService,
-              private _roomService:RoomService,
-              private _scheduleService:ScheduleService) {
+    private _cinemaService: CinemaService,
+    private _typeOfTicketService: TypeOfTicketService,
+    private _exibitionDaysService: ExibitionDayService,
+    private _roomService: RoomService,
+    private _scheduleService: ScheduleService) {
     this.updateMovies();
   }
 
@@ -37,46 +37,47 @@ export class DataService {
   }
 
   public getMovieByID(id) {
-    for (const movie of this.movies) {
-      if (movie.id === id) {
-        return movie;
+    if (this.movies !== undefined)
+      for (const movie of this.movies) {
+        if (movie.id === id) {
+          return movie;
+        }
       }
-    }
   }
 
   public getSchedule(id) {
-    this._movieService.getSchedulefromRoom(id).subscribe((res: any) => {      
-      this.schedules$.next(res);        
-    });    
+    this._movieService.getSchedulefromRoom(id).subscribe((res: any) => {
+      this.schedules$.next(res);
+    });
   }
-  
-  public getCinemas(id){
+
+  public getCinemas(id) {
     this._cinemaService.getCinemas(id).subscribe((res: any) => {
-      this.cinemas$.next(res);     
-    });
-  } 
-
-  public getTypeOfTickets(id){
-    this._typeOfTicketService.getTypeOfTickets(id).subscribe((res:any) => {
-     this.typeOfTickets$.next(res);
-  });   
-  }
-
-  public getRooms(idMovie,idCinema){
-    this._roomService.getRoom(idMovie,idCinema).subscribe((res: any) => {
-      this.rooms$.next(res);     
+      this.cinemas$.next(res);
     });
   }
 
-  public getExibitionDayfromRoom(id){
-    this._exibitionDaysService.getExibitionDayfromRoom(id).subscribe((res:any) => {
-     this.exibitionDays$.next(res);
-   });   
+  public getTypeOfTickets(id) {
+    this._typeOfTicketService.getTypeOfTickets(id).subscribe((res: any) => {
+      this.typeOfTickets$.next(res);
+    });
   }
 
-  public getAvailableSeats(id){
-    this._scheduleService.getAvailableSeats(id).subscribe((res:any) => {
+  public getRooms(idMovie, idCinema) {
+    this._roomService.getRoom(idMovie, idCinema).subscribe((res: any) => {
+      this.rooms$.next(res);
+    });
+  }
+
+  public getExibitionDayfromRoom(id) {
+    this._exibitionDaysService.getExibitionDayfromRoom(id).subscribe((res: any) => {
+      this.exibitionDays$.next(res);
+    });
+  }
+
+  public getAvailableSeats(id) {
+    this._scheduleService.getAvailableSeats(id).subscribe((res: any) => {
       this.availableSeats$.next(res);
-    }); 
+    });
   }
 }
