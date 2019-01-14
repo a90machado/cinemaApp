@@ -5,6 +5,7 @@ import { CinemaService } from './cinema.service';
 import { TypeOfTicketService } from './type-of-ticket.service';
 import { ExibitionDayService } from './exibition-day.service';
 import { RoomService } from './room.service';
+import { ScheduleService } from './schedule.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,14 @@ export class DataService {
   public typeOfTickets$: ReplaySubject<any[]> = new ReplaySubject(1);
   public exibitionDays$: ReplaySubject<any[]> = new ReplaySubject(1);
   public rooms$: ReplaySubject<any[]> = new ReplaySubject(1);
- 
+  public availableSeats$: ReplaySubject<any[]> = new ReplaySubject(1); 
 
   constructor(private _movieService: MovieService,
               private _cinemaService: CinemaService,
               private _typeOfTicketService: TypeOfTicketService,
               private _exibitionDaysService: ExibitionDayService,
-              private _roomService:RoomService) {
+              private _roomService:RoomService,
+              private _scheduleService:ScheduleService) {
     this.updateMovies();
   }
 
@@ -54,8 +56,8 @@ export class DataService {
     });
   } 
 
-  public getTypeOfTickets(){
-    this._typeOfTicketService.getTypeOfTickets().subscribe((res:any) => {
+  public getTypeOfTickets(id){
+    this._typeOfTicketService.getTypeOfTickets(id).subscribe((res:any) => {
      this.typeOfTickets$.next(res);
   });   
   }
@@ -72,4 +74,9 @@ export class DataService {
    });   
   }
 
+  public getAvailableSeats(id){
+    this._scheduleService.getAvailableSeats(id).subscribe((res:any) => {
+      this.availableSeats$.next(res);
+    }); 
+  }
 }

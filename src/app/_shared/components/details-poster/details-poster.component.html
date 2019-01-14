@@ -31,7 +31,7 @@
       <ng-template matStepLabel><b>Movie</b></ng-template>
       <label for="movie">{{ selectedMovie.title }}</label>
     </mat-step>
-    <mat-step>
+    <mat-step [editable]="editable">
       <ng-template matStepLabel><b>Cinema</b></ng-template>
       <mat-select name="cinemas" id="cinemas" [(ngModel)]="cinemas" placeholder="Select Cinema">
         <mat-option *ngFor="let cinema of cinemas | async" (click)="clickedCinema(cinema.id)">
@@ -39,7 +39,7 @@
         </mat-option>
       </mat-select>
     </mat-step>
-    <mat-step>
+    <mat-step [editable]="editable">
       <ng-template matStepLabel><b>Session</b></ng-template>
       <div class="table-responsive">
         <table class="table" [ngClass]='theme'>
@@ -53,17 +53,17 @@
               <td *ngFor="let room of rooms | async">
                 Room {{room.id}}
               </td>
-              <td>                
-                  <p *ngFor="let schedule of schedules | async" (click)="clickSession()">
-                      {{ dataForSelect(schedule.sessionBegin) }}
-                  </p>      
+              <td>         
+                  <p *ngFor="let scheduleDay of schedules | async | scheduleDay:exibitionDay" (click)="clickSession(scheduleDay.id)">
+                      {{ dataForSelect(scheduleDay.sessionBegin) }}
+                  </p>     
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </mat-step>
-    <mat-step>
+    <mat-step [editable]="editable">
       <ng-template matStepLabel><b>Ticket</b></ng-template>
       <div class="table-responsive">
         <table class="table" [ngClass]='theme'>
@@ -83,15 +83,20 @@
                 {{row.priceOfTicket}}
               </td>
               <td>
-                <mat-select name="quantity" id="quantity" [(ngModel)]="quantities" placeholder="Qty">
-                  <mat-option *ngFor="let quantity of quantities | async" [value]="quantity">
-
+                <mat-select name="quantity" id="quantity" placeholder="Qty">
+                  <mat-option *ngFor="let quantity of quantities" (click)=" clickQuantity(quantity,row.id)">
+                   {{quantity}}
                   </mat-option>
                 </mat-select>
               </td>
             </tr>
+            <tr>
+              <br>
+              Available Seats: {{availableSeats}}
+            </tr>
           </tbody>
         </table>
+        <button (click)="clickNext()">Next</button>
       </div>
     </mat-step>
     <mat-step>

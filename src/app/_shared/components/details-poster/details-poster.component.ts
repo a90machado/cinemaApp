@@ -14,22 +14,25 @@ export class DetailsPosterComponent implements OnInit {
   @ViewChild('stepper') stepper: MatStepper;
   
   selectedMovie: Movie;
-  formatDate: string;
   selectedId: number;
+
   schedules: any;
   exibitionDays: any; 
   cinemas: any;
   rooms:any;
   typeOfTickets: any;
   header: any[];
-  
-  currentDate: number;
-  currentDay: string;
-  currentMonth: string;
-  currentYear: string;
+  availableSeats: any;
+  quantities: number[];
+  quantity:number;
+  ticketTypeId:number;
+
   cinemaId: number;
+  scheduleId: number;
 
   style = 'none';
+  editable = false;
+
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -50,7 +53,6 @@ export class DetailsPosterComponent implements OnInit {
     } else {
       this.router.navigate(['/notfound']);
     }
-     this.formatDate=this.releaseDateMovie(this.selectedMovie);
      
    //GET CINEMAS 
    this.dataService.getCinemas(this.selectedId); 
@@ -64,10 +66,6 @@ export class DetailsPosterComponent implements OnInit {
    this.dataService.getSchedule(this.selectedId);   
    this.schedules=this.dataService.schedules$;     
 
-   //GET TYPE OF TICKETS
-   this.dataService.getTypeOfTickets();
-   this.typeOfTickets=this.dataService.typeOfTickets$;
-   this.header=['Type of Ticket', 'Price ($)', 'Amount'];
   }
 
   ngOnInit() { }
@@ -76,10 +74,6 @@ export class DetailsPosterComponent implements OnInit {
     this.style = 'block';
     this.stepper.selectedIndex = 1;
   }
-
-  releaseDateMovie(selectedMovie){    
-    return this.datepipe.transform(this.selectedMovie.releaseDate, 'yyyy-MM-dd');  
-  } 
 
   dataForSelect(session){
     
@@ -102,13 +96,44 @@ export class DetailsPosterComponent implements OnInit {
 
   clickedCinema(cinemaId){
     this.cinemaId = cinemaId;
+
     //GET ROOMS
    this.dataService.getRooms(this.selectedId,this.cinemaId);
    this.rooms=this.dataService.rooms$;
+
+    //GET TYPE OF TICKETS
+    this.dataService.getTypeOfTickets(this.cinemaId);
+    this.typeOfTickets=this.dataService.typeOfTickets$;
+    this.header=['Type of Ticket', 'Price ($)', 'Amount'];
+
+    
+    this.stepper.selectedIndex=2;
   }
 
-  clickSession(){
-    
+  clickSession(scheduleId){
+    this.scheduleId = scheduleId;
+    this.stepper.selectedIndex=3;
+
+    //GET AVAILABLE SEATS
+   this.dataService.getAvailableSeats(this.scheduleId);   
+   this.availableSeats=this.dataService.availableSeats$;
+
+   this.availableSeats.subscribe((res:any) => {
+     this.availableSeats=res;    
+   });
+
+  this.quantities=[1,2,3,4,5];
+  }
+
+  clickQuantity(quantity, ticketTypeId){
+    this.quantity=quantity;
+    this.ticketTypeId=ticketTypeId;
+
+   // continuar isto
+  }
+
+  clickNext(){
+    this.stepper.selectedIndex=4;
   }
 
 }

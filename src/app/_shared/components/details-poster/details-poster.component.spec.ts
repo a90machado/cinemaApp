@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DetailsPosterComponent } from './details-poster.component';
 
 describe('DetailsPosterComponent', () => {
