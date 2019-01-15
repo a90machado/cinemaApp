@@ -8,8 +8,13 @@ export class ScheduleService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getAvailableSeats(id){
-    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/schedule/availableseats/'+id);
+  public getAvailableSeats(idCinema, idMovie, idSchedule){
+    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/schedule/availableseats/'+idCinema+'+'+idMovie+'+'+idSchedule);
   }  
+
+  public getStructure(idCinema, idMovie, idSchedule){
+    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/schedule/structure/'+idCinema+'+'+idMovie+'+'+idSchedule)
+
+  }
  
 }

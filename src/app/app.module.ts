@@ -13,7 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import { ScheduleDayPipe } from './_shared/components/details-poster/schedule-day.pipe';
-
+import { StructurePipePipe } from './_shared/components/details-poster/structure-pipe.pipe';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ScheduleDayPipe } from './_shared/components/details-poster/schedule-da
     DetailsPosterComponent,
     DetailsPremiereComponent,
     NotfoundComponent,
-    ScheduleDayPipe, 
+    ScheduleDayPipe,
+    StructurePipePipe, 
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,8 @@ import { ScheduleDayPipe } from './_shared/components/details-poster/schedule-da
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule       
+    MatSelectModule,
+    AngularFontAwesomeModule       
   ],
   entryComponents: [],
   providers: [DatePipe],

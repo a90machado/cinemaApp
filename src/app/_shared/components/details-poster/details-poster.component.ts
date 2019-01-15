@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services';
 import { DatePipe } from '@angular/common';
 import { Movie } from '../..';
+import { ReplaySubject } from 'rxjs';
+import { Room } from '../../models/room';
 
 @Component({
   selector: 'app-details-poster',
@@ -21,6 +23,7 @@ export class DetailsPosterComponent implements OnInit {
   cinemas: any;
   rooms: any;
   typeOfTickets: any;
+  structure: any;
   header: any[];
   availableSeats: any;
   quantities: number[];
@@ -28,12 +31,17 @@ export class DetailsPosterComponent implements OnInit {
 
   cinemaId: number;
   scheduleId: number;
+  roomId:number;
+  
+  soma=0;
 
   style = 'none';
   block = '';
-  disabled='';
+  alertQtd = 'none';
+  nextBtn = 'none';
+  
   editable = false;
-
+ 
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -111,13 +119,12 @@ export class DetailsPosterComponent implements OnInit {
 
     //GET ROOMS
     this.dataService.getRooms(this.selectedId, this.cinemaId);
-
+    this.rooms=this.dataService.rooms$;
 
     //GET TYPE OF TICKETS
     this.dataService.getTypeOfTickets(this.cinemaId);
     this.typeOfTickets = this.dataService.typeOfTickets$;
     this.header = ['Type of Ticket', 'Price', 'Amount'];
-
 
     this.stepper.selectedIndex = 2;
   }
@@ -127,14 +134,14 @@ export class DetailsPosterComponent implements OnInit {
     this.stepper.selectedIndex = 3;
 
     //GET AVAILABLE SEATS
-    this.dataService.getAvailableSeats(this.scheduleId);
+    this.dataService.getAvailableSeats(this.cinemaId,this.selectedId,this.scheduleId);
     this.availableSeats = this.dataService.availableSeats$;
 
     this.availableSeats.subscribe((res: any) => {
       this.availableSeats = res;
     });
 
-    this.quantities = [1, 2, 3, 4, 200];
+    this.quantities = [1, 2, 3, 4, 5, 6, 7, 8];
   }
 
   clickQuantity(quantity, ticketTypeId) {
@@ -142,20 +149,36 @@ export class DetailsPosterComponent implements OnInit {
     this.tickets[ticketTypeId]=+quantity;
 
     var keys=Object.keys(this.tickets);
-    var soma=0;
-    for(var key of keys ){
-      soma+=this.tickets[key];
-    }
-    console.log(soma);
     
-    // if(soma>this.availableSeats){
-    //  this.disabled='true';
-    // }
-    
+    this.nextBtn = 'block';
+
+    this.soma=0;
+    for(var key of keys ){      
+      this.soma+=this.tickets[key];
+
+      if(this.soma>this.availableSeats){
+        this.soma=this.soma-this.tickets[key];
+        this.tickets[key]==0
+        this.alertQtd='block';        
+      }
+    }    
   }
 
   clickNext() {
     this.stepper.selectedIndex = 4;
+
+     //GET STRUCTURE
+     this.dataService.getStructure(this.cinemaId,this.selectedId,this.scheduleId);
+     this.structure=this.dataService.structure$
+     
+  }
+
+  clickRoom(roomId){
+    this.roomId=roomId;
+  }
+
+  ReserveSeat(i,j){
+    console.log(i,j);
   }
 
 }

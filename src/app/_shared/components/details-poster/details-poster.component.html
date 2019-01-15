@@ -60,8 +60,8 @@
                 Room {{room.id}}
               </td>
               <td>
-                <p id="pSchedule" *ngFor="let scheduleDay of schedules | async | scheduleDay:exibitionDay" (click)="clickSession(scheduleDay.id)">
-                  {{ dataForSelect(scheduleDay.sessionBegin) }}
+                <p id="pSchedule" *ngFor="let schedule of schedules | async | scheduleDay:exibitionDay" (click)="clickSession(schedule.id)">
+                  {{ dataForSelect(schedule.sessionBegin) }}
                 </p>
               </td>
             </tr>
@@ -96,18 +96,36 @@
                 </mat-select>
               </td>
             </tr>
-            <tr>
-              <br>
-              Available Seats: {{availableSeats}}
-            </tr>
+            
+            Available Seats: {{availableSeats}}
+             
+            Tickets Selected: {{soma}}  
+            
+            <p [ngStyle]="{'display': alertQtd}">Number of tickets is above the available seats</p>
           </tbody>
         </table>
-        <button ng-disabled="disabled"  (click)="clickNext()">Next</button>
+        <button [ngStyle]="{'display': nextBtn}" (click)="clickNext()">Next</button>
       </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Reserve Seat</b></ng-template>
-
+      <mat-select name="rooms" id="rooms" placeholder="Select room">
+        <mat-option *ngFor="let room of rooms | async" (click)="clickRoom(room.id)">
+          Room {{room.id}}
+        </mat-option>
+      </mat-select>
+      <table class="table" [ngClass]='theme'>
+          <thead>
+          </thead>
+          <tbody>
+            <tr *ngFor="let queue of rooms | async | structurePipe:roomId:1; let i = index">
+              <td *ngFor="let seats of rooms | async | structurePipe:roomId:2; let j = index">
+                  <i class="material-icons" (click)="ReserveSeat(i,j)">account_box</i>
+              </td>
+            </tr>              
+          </tbody>
+      </table>
+        Seats to Choose: {{soma}}  
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Purchase</b></ng-template>

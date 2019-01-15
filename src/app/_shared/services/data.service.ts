@@ -19,7 +19,9 @@ export class DataService {
   public exibitionDays$: ReplaySubject<any[]> = new ReplaySubject(1);
   public rooms$: ReplaySubject<any[]> = new ReplaySubject(1);
   public availableSeats$: ReplaySubject<any[]> = new ReplaySubject(1);
+  public structure$: ReplaySubject<any[]> = new ReplaySubject(1);
 
+  
   constructor(private _movieService: MovieService,
     private _cinemaService: CinemaService,
     private _typeOfTicketService: TypeOfTicketService,
@@ -75,9 +77,17 @@ export class DataService {
     });
   }
 
-  public getAvailableSeats(id) {
-    this._scheduleService.getAvailableSeats(id).subscribe((res: any) => {
+  public getAvailableSeats(idCinema, idMovie, idSchedule) {
+    this._scheduleService.getAvailableSeats(idCinema, idMovie, idSchedule).subscribe((res: any) => {
       this.availableSeats$.next(res);
     });
   }
+
+  public getStructure(idCinema, idMovie, idSchedule) {
+    this._scheduleService.getStructure(idCinema, idMovie, idSchedule).subscribe((res: any) => {
+      this.structure$.next(res);
+    });
+  }
+
+
 }
