@@ -89,8 +89,8 @@
                 {{row.priceOfTicket}} $
               </td>
               <td>
-                <mat-select name="quantity" id="quantity" placeholder="Qty">
-                  <mat-option *ngFor="let quantity of quantities" (click)=" clickQuantity(quantity,row.id)">
+                <mat-select name="quantity" id="quantity" placeholder="Select Quantity">
+                  <mat-option *ngFor="let quantity of quantities" value="{{selectedQuantity}}" (click)=" clickQuantity(quantity,row.id)">
                     {{quantity}}
                   </mat-option>
                 </mat-select>
@@ -109,23 +109,24 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Reserve Seat</b></ng-template>
-      <mat-select name="rooms" id="rooms" placeholder="Select room">
-        <mat-option *ngFor="let room of rooms | async" (click)="clickRoom(room.id)">
+      <mat-select [disabled]="rommDisplay" name="rooms" id="rooms" placeholder="Select room">
+        <mat-option *ngFor="let room of rooms | async" value="{{selectedRoom}}" (click)="clickRoom(room.id)">
           Room {{room.id}}
         </mat-option>
       </mat-select>
-      <table class="table" [ngClass]='theme'>
+      <table id="structure" class="table" [ngClass]='theme'>
           <thead>
           </thead>
           <tbody>
             <tr *ngFor="let queue of rooms | async | structurePipe:roomId:1; let i = index">
-              <td *ngFor="let seats of rooms | async | structurePipe:roomId:2; let j = index">
-                  <i class="material-icons" (click)="ReserveSeat(i,j)">account_box</i>
+              <td id="colStructure" *ngFor="let seats of rooms | async | structurePipe:roomId:2; let j = index">
+                  <button id="btnSeats" [disabled]="clickDisplay" (click)="reserveSeat(i,j)"><img src="{{ (!clicked)? 'https://img.icons8.com/office/1600/theatre-seat.png' : 'https://imageshack.com/a/img923/3297/0dBns0.png' }}" alt=""></button>
               </td>
             </tr>              
           </tbody>
       </table>
-        Seats to Choose: {{soma}}  
+        Seats to Choose: {{seatsToChoose}}
+        <button [ngStyle]="{'display': seatsBtn}" (click)="clickforLast()">Next</button>  
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Purchase</b></ng-template>

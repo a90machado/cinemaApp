@@ -4,8 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services';
 import { DatePipe } from '@angular/common';
 import { Movie } from '../..';
-import { ReplaySubject } from 'rxjs';
-import { Room } from '../../models/room';
+
 
 @Component({
   selector: 'app-details-poster',
@@ -27,21 +26,29 @@ export class DetailsPosterComponent implements OnInit {
   header: any[];
   availableSeats: any;
   quantities: number[];
-  tickets= {};
+  tickets= {}; 
+  seatsToChoose:number;
+  clicked=false;
 
   cinemaId: number;
   scheduleId: number;
   roomId:number;
   
   soma=0;
-
+  
   style = 'none';
   block = '';
   alertQtd = 'none';
   nextBtn = 'none';
-  
+  seatsBtn = 'none';
+
+  rommDisplay = false;
   editable = false;
- 
+  clickDisplay = false;
+  takeASeat = false;
+
+  selectedQuantity = '';
+  selectedRoom = '';
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -146,6 +153,8 @@ export class DetailsPosterComponent implements OnInit {
 
   clickQuantity(quantity, ticketTypeId) {
 
+    this.selectedQuantity=quantity;
+
     this.tickets[ticketTypeId]=+quantity;
 
     var keys=Object.keys(this.tickets);
@@ -166,19 +175,38 @@ export class DetailsPosterComponent implements OnInit {
 
   clickNext() {
     this.stepper.selectedIndex = 4;
-
-     //GET STRUCTURE
-     this.dataService.getStructure(this.cinemaId,this.selectedId,this.scheduleId);
-     this.structure=this.dataService.structure$
-     
+    this.seatsToChoose=this.soma;     
   }
 
-  clickRoom(roomId){
-    this.roomId=roomId;
+  clickRoom(roomId){    
+    //GET STRUCTURE
+    this.dataService.getStructure(this.cinemaId,this.selectedId,this.scheduleId);
+    this.structure=this.dataService.structure$
+
+    this.selectedRoom='Room '+roomId;
+
+    this.roomId=roomId;   
   }
 
-  ReserveSeat(i,j){
-    console.log(i,j);
+  reserveSeat(i,j){ 
+    this.rommDisplay=true;
+    this.seatsToChoose--;
+
+    if(this.seatsToChoose==0){
+      this.clickDisplay=true;
+      this.seatsBtn='block';
+    }
+
+    // if (this.clicked==true) {this.clicked=false} else {this.clicked = true}
+
+  }
+
+  unreserveSeat(){
+    this.takeASeat=false;  
+  }
+
+  clickforLast(){
+    this.stepper.selectedIndex = 5;
   }
 
 }
