@@ -9,7 +9,7 @@
             Ticket</button>
         </div>
         <div class="text-center">
-          <button type="button" id="btnReset" [ngStyle]="{'display': style}" (click)="resetClick(stepper)" class="btn btn-secondary">Reset</button>
+          <button type="button" id="btnReset" [ngStyle]="{'display': style}" (click)="resetClick()" class="btn btn-secondary">Reset</button>
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@
             
             Available Seats: {{availableSeats}}
              
-            Tickets Selected: {{soma}}  
+            Tickets Selected: {{add}}  
             
             <p [ngStyle]="{'display': alertQtd}">Number of tickets is above the available seats</p>
           </tbody>
@@ -120,12 +120,14 @@
           <tbody>
             <tr *ngFor="let queue of rooms | async | structurePipe:roomId:1; let i = index">
               <td id="colStructure" *ngFor="let seats of rooms | async | structurePipe:roomId:2; let j = index">
-                 <img id="btnSeats" [disabled]="clickDisplay"  src="https://imageshack.com/a/img923/3297/0dBns0.png" alt="" (click)="reserveSeat(i,j)">
+                <i *ngIf="getStructure(i,j)=='free'" class="material-icons" (click)="reserveSeat(i,j)">event_seat</i>
+                <i *ngIf="getStructure(i,j)=='occupied'" class="material-icons">account_box</i>
+                <i *ngIf="getStructure(i,j)=='reserved'" class="material-icons" (click)="unreserveSeat(i,j)">check_circle</i>
               </td>
-            </tr>              
+            </tr>           
           </tbody>
       </table>
-        Seats to Choose: {{seatsToChoose}}
+        Seats to Choose: {{add}}
         <button [ngStyle]="{'display': seatsBtn}" (click)="clickforLast()">Next</button>  
     </mat-step>
     <mat-step>

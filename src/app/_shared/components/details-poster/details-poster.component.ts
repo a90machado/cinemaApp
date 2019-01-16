@@ -16,6 +16,9 @@ export class DetailsPosterComponent implements OnInit {
 
   selectedMovie: Movie;
   selectedId: number;
+  cinemaId: number;
+  scheduleId: number;
+  roomId: number;
   formatDate: string;
   schedules: any;
   exibitionDays: any;
@@ -26,15 +29,13 @@ export class DetailsPosterComponent implements OnInit {
   header: any[];
   availableSeats: any;
   quantities: number[];
-  tickets= {}; 
-  seatsToChoose:number;
+  tickets = {};
+  seatsToChoose: number;
+  roomStruct: any;
+  ObjRooms: any;
+  roomPosition: number;
+  add: number;
 
-  cinemaId: number;
-  scheduleId: number;
-  roomId:number;
-  
-  soma=0;
-  
   style = 'none';
   block = '';
   alertQtd = 'none';
@@ -44,10 +45,10 @@ export class DetailsPosterComponent implements OnInit {
   rommDisplay = false;
   editable = false;
   clickDisplay = false;
-  
 
   selectedQuantity = '';
   selectedRoom = '';
+  iconSelect = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -59,19 +60,19 @@ export class DetailsPosterComponent implements OnInit {
     this.route.paramMap.subscribe(
       params => {
         this.selectedId = +params.get('id');
-        
+
       }
     );
 
     //GET PATH AND DISPLAY WITH MOVIE ID
-    
-      if (this.dataService.getMovieByID(this.selectedId)) {
-        this.selectedMovie = this.dataService.getMovieByID(this.selectedId);
-      } else {
-        this.router.navigate(['/home'])
-      }
 
-    this.formatDate=this.releaseDateMovie(this.selectedMovie);
+    if (this.dataService.getMovieByID(this.selectedId)) {
+      this.selectedMovie = this.dataService.getMovieByID(this.selectedId);
+    } else {
+      this.router.navigate(['/home'])
+    }
+
+    this.formatDate = this.releaseDateMovie(this.selectedMovie);
 
     //GET CINEMAS 
     this.dataService.getCinemas(this.selectedId);
@@ -88,17 +89,41 @@ export class DetailsPosterComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.structure = this.dataService.structure$;
+
+    this.structure.subscribe((a) => {
+      
+      this.roomStruct = a;
+      for (let index = 0; index < this.roomStruct.length; index++) {
+        this.roomStruct[index] = (this.roomStruct[index]) ? 'occupied' : 'free';
+
+      }
+    });
+
+    this.rooms = this.dataService.rooms$;
+
+    this.typeOfTickets = this.dataService.typeOfTickets$;
+
+    this.availableSeats = this.dataService.availableSeats$;
+    this.availableSeats.subscribe((res: any) => {
+      this.availableSeats = res;
+    });
 
   }
 
-  releaseDateMovie(selectedMovie){    
-    return this.datepipe.transform(this.selectedMovie.releaseDate, 'yyyy-MM-dd');  
-  } 
+  releaseDateMovie(selectedMovie) {
+    return this.datepipe.transform(this.selectedMovie.releaseDate, 'yyyy-MM-dd');
+  }
 
   buyClick() {
     this.style = 'block';
     this.stepper.selectedIndex = 1;
     this.block = 'none';
+  }
+
+  resetClick(){
+    // this.router.navigateByUrl('/RefrshComponent', {skipLocationChange: true}).then(()=>
+    // this.router.navigate(["detailsposter/"+this.selectedId])); 
   }
 
   dataForSelect(session) {
@@ -125,11 +150,11 @@ export class DetailsPosterComponent implements OnInit {
 
     //GET ROOMS
     this.dataService.getRooms(this.selectedId, this.cinemaId);
-    this.rooms=this.dataService.rooms$;
+    
 
     //GET TYPE OF TICKETS
     this.dataService.getTypeOfTickets(this.cinemaId);
-    this.typeOfTickets = this.dataService.typeOfTickets$;
+   
     this.header = ['Type of Ticket', 'Price', 'Amount'];
 
     this.stepper.selectedIndex = 2;
@@ -140,69 +165,95 @@ export class DetailsPosterComponent implements OnInit {
     this.stepper.selectedIndex = 3;
 
     //GET AVAILABLE SEATS
-    this.dataService.getAvailableSeats(this.cinemaId,this.selectedId,this.scheduleId);
-    this.availableSeats = this.dataService.availableSeats$;
-
-    this.availableSeats.subscribe((res: any) => {
-      this.availableSeats = res;
-    });
+    this.dataService.getAvailableSeats(this.cinemaId, this.selectedId, this.scheduleId);
 
     this.quantities = [1, 2, 3, 4, 5, 6, 7, 8];
   }
 
   clickQuantity(quantity, ticketTypeId) {
 
-    this.selectedQuantity=quantity;
+    this.selectedQuantity = quantity;
 
-    this.tickets[ticketTypeId]=+quantity;
+    this.tickets[ticketTypeId] = +quantity;
 
-    var keys=Object.keys(this.tickets);
-    
+    var keys = Object.keys(this.tickets);
+
     this.nextBtn = 'block';
 
-    this.soma=0;
-    for(var key of keys ){      
-      this.soma+=this.tickets[key];
+    this.add = 0;
+    for (var key of keys) {
+      this.add += this.tickets[key];
 
-      if(this.soma>this.availableSeats){
-        this.soma=this.soma-this.tickets[key];
-        this.tickets[key]==0
-        this.alertQtd='block';        
+      if (this.add > this.availableSeats) {
+        this.add = this.add - this.tickets[key];
+        this.tickets[key] == 0
+        this.alertQtd = 'block';
       }
-    }    
+    }
   }
 
   clickNext() {
     this.stepper.selectedIndex = 4;
-    this.seatsToChoose=this.soma;     
+    this.seatsToChoose = this.add;
   }
 
-  clickRoom(roomId){    
-    //GET STRUCTURE
-    this.dataService.getStructure(this.cinemaId,this.selectedId,this.scheduleId);
-    this.structure=this.dataService.structure$
+  clickRoom(roomId) {    
+    
+     //GET STRUCTURE
+    this.dataService.getStructure(this.cinemaId, this.selectedId, this.scheduleId); 
+    this.selectedRoom = 'Room ' + roomId;
+    
+    this.roomId = roomId;    
 
-    this.selectedRoom='Room '+roomId;
-
-    this.roomId=roomId;   
-  }
-
-  reserveSeat(i,j){ 
-    this.rommDisplay=true;
-    this.seatsToChoose--;
-
-    if(this.seatsToChoose==0){
-      this.clickDisplay=true;
-      this.seatsBtn='block';
+    this.roomPosition = 0;
+    for (var key of this.rooms) {
+      if (key.id === this.roomId) {
+        return this.roomPosition;
+      } else {
+        this.roomPosition += ((key.numberOfSeatsPerQueue * key.numberOfQueues));
+      }
     }
-
   }
 
-  unreserveSeat(){
+  getStructure(i, j) {
+    if (this.roomStruct !== undefined) {
+      let position = '' + i + j;
+      return this.roomStruct[Number(this.roomPosition + position)];
+    }
+  }
+
+  reserveSeat(i, j) {
+    this.rommDisplay = true;
+
+    if (this.add > 0) {
+      this.add--;
+
+      let position = '' + i + j;
+      this.roomStruct[Number(this.roomPosition + position)] = 'reserved';
+      if (this.add == 0) {
+        this.seatsBtn = 'block';
+      }
+    }
     
   }
 
-  clickforLast(){
+  unreserveSeat(i, j) {
+
+    if(this.add>=0){
+      this.add++;
+      let position = '' + i + j;
+      this.roomStruct[Number(this.roomPosition + position)] = 'free';
+    }
+
+    if (this.add==this.seatsToChoose) {
+      this.rommDisplay = false;
+    }
+    if (this.add > 0) {
+      this.seatsBtn = 'none';
+    }
+  }
+
+  clickforLast() {
     this.stepper.selectedIndex = 5;
   }
 
