@@ -120,7 +120,7 @@
           <tbody>
             <tr *ngFor="let queue of rooms | async | structurePipe:roomId:1; let i = index">
               <td id="colStructure" *ngFor="let seats of rooms | async | structurePipe:roomId:2; let j = index">
-                  <button id="btnSeats" [disabled]="clickDisplay" (click)="reserveSeat(i,j)"><img src="{{ (!clicked)? 'https://img.icons8.com/office/1600/theatre-seat.png' : 'https://imageshack.com/a/img923/3297/0dBns0.png' }}" alt=""></button>
+                 <img id="btnSeats" [disabled]="clickDisplay"  src="https://imageshack.com/a/img923/3297/0dBns0.png" alt="" (click)="reserveSeat(i,j)">
               </td>
             </tr>              
           </tbody>

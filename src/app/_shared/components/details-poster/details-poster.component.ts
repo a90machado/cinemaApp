@@ -28,7 +28,6 @@ export class DetailsPosterComponent implements OnInit {
   quantities: number[];
   tickets= {}; 
   seatsToChoose:number;
-  clicked=false;
 
   cinemaId: number;
   scheduleId: number;
@@ -45,7 +44,7 @@ export class DetailsPosterComponent implements OnInit {
   rommDisplay = false;
   editable = false;
   clickDisplay = false;
-  takeASeat = false;
+  
 
   selectedQuantity = '';
   selectedRoom = '';
@@ -197,12 +196,10 @@ export class DetailsPosterComponent implements OnInit {
       this.seatsBtn='block';
     }
 
-    // if (this.clicked==true) {this.clicked=false} else {this.clicked = true}
-
   }
 
   unreserveSeat(){
-    this.takeASeat=false;  
+    
   }
 
   clickforLast(){
