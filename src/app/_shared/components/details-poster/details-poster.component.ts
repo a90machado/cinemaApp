@@ -257,4 +257,15 @@ export class DetailsPosterComponent implements OnInit {
     this.stepper.selectedIndex = 5;
   }
 
+  postTickets(){
+     //POST TICKET    
+     var tickts = Object.keys(this.tickets);
+
+    //  for (var key of tickts) {
+    //    for (let index = 1; index <= this.tickets[key]; index++) {
+                
+    //    }      
+    //  }
+
+    }
 }

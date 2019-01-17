@@ -6,6 +6,7 @@ import { TypeOfTicketService } from './type-of-ticket.service';
 import { ExibitionDayService } from './exibition-day.service';
 import { RoomService } from './room.service';
 import { ScheduleService } from './schedule.service';
+import { TicketService } from './ticket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,8 @@ export class DataService {
     private _typeOfTicketService: TypeOfTicketService,
     private _exibitionDaysService: ExibitionDayService,
     private _roomService: RoomService,
-    private _scheduleService: ScheduleService) {
+    private _scheduleService: ScheduleService,
+    private _ticketService: TicketService) {
     this.updateMovies();
   }
 
@@ -89,5 +91,8 @@ export class DataService {
     });
   }
 
+  public postTickets(){
+   this._ticketService.postTickets();
+  }
 
 }

@@ -4,7 +4,8 @@ import { Movie } from './movie';
 export class Room{
     'cinema': Cinema;
     'movie': Movie;
-    'totalSeats':number;
+    'numberOfQueues': number;
+	'numberOfSeatsPerQueue': number;
     
     constructor(data?: any){
         Object.assign(this,data);
