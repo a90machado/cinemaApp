@@ -22,7 +22,7 @@ export class DataService {
   public availableSeats$: ReplaySubject<any[]> = new ReplaySubject(1);
   public structure$: ReplaySubject<any[]> = new ReplaySubject(1);
 
-  
+
   constructor(private _movieService: MovieService,
     private _cinemaService: CinemaService,
     private _typeOfTicketService: TypeOfTicketService,
@@ -91,8 +91,12 @@ export class DataService {
     });
   }
 
-  public postTickets(){
-   this._ticketService.postTickets();
+  public postTickets(ticket) {
+    return this._ticketService.postTickets(ticket);
+  }
+
+  public postStructure(structure) {
+    return this._scheduleService.postStructure(structure);
   }
 
 }

@@ -8,8 +8,8 @@ export class TicketService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public postTickets(){
-  //  return this.httpClient.post('http://localhost:8080/CinemaTicketSystem/api/ticket/new/');
+  public postTickets(ticket) {
+    return this.httpClient.post('http://localhost:8080/CinemaTicketSystem/api/ticket/new/', ticket);
   }
 
 }

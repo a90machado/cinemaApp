@@ -13,8 +13,12 @@ export class ScheduleService {
   }  
 
   public getStructure(idCinema, idMovie, idSchedule){
-    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/schedule/structure/'+idCinema+'+'+idMovie+'+'+idSchedule)
+    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/schedule/structure/'+idCinema+'+'+idMovie+'+'+idSchedule);
 
+  }
+
+  public postStructure(structure){
+    return this.httpClient.put('http://localhost:8080/CinemaTicketSystem/api/schedule/structure/update',structure);
   }
  
 }

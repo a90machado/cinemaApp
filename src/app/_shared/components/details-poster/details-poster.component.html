@@ -90,6 +90,9 @@
               </td>
               <td>
                 <mat-select name="quantity" id="quantity" placeholder="Select Quantity">
+                  <mat-option value="0" (click)=" clickQuantity(0,row.id)">
+                      Select Quantity
+                    </mat-option>
                   <mat-option *ngFor="let quantity of quantities" value="{{selectedQuantity}}" (click)=" clickQuantity(quantity,row.id)">
                     {{quantity}}
                   </mat-option>
@@ -120,7 +123,7 @@
           <tbody>
             <tr *ngFor="let queue of rooms | async | structurePipe:roomId:1; let i = index">
               <td id="colStructure" *ngFor="let seats of rooms | async | structurePipe:roomId:2; let j = index">
-                <i *ngIf="getStructure(i,j)=='free'" class="material-icons" (click)="reserveSeat(i,j)">event_seat</i>
+                <i *ngIf="getStructure(i,j)=='free'"  class="material-icons" (click)="reserveSeat(i,j)">event_seat</i>
                 <i *ngIf="getStructure(i,j)=='occupied'" class="material-icons">account_box</i>
                 <i *ngIf="getStructure(i,j)=='reserved'" class="material-icons" (click)="unreserveSeat(i,j)">check_circle</i>
               </td>
@@ -132,7 +135,7 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Purchase</b></ng-template>
-      <button (click)="postTickets()">Finnish Process</button>  
+      <button (click)="postInformation()">Finnish Process</button>  
     </mat-step>
   </mat-horizontal-stepper>
 </div>
