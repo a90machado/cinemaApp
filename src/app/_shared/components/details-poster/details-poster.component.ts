@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatStepper } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services';
@@ -39,12 +39,13 @@ export class DetailsPosterComponent implements OnInit {
   roomPosition: number;
   add: number;
   tpOfTickets: any;
-  roomsCinema: any;
+  roomsCinema: any = [];
   postTicket: Ticket;
   postRoomStructure: any = [];
   cinemaTicket: any;
   roomTicket: any;
   takeRoomPositions: number;
+  count: number;
 
   style = 'none';
   block = '';
@@ -102,24 +103,11 @@ export class DetailsPosterComponent implements OnInit {
 
   ngOnInit() {
 
-    this.structure = this.dataService.structure$;
-
-    this.structure.subscribe((a) => {
-        
-      this.roomStruct = a;
-
-      for (let index = 0; index < this.roomStruct.length; index++) {
-        this.roomStruct[index] = (this.roomStruct[index]) ? 'occupied' : 'free';
-      }
-
+    this.rooms = this.dataService.rooms$; 
+    
+    this.rooms.subscribe((b) =>{      
+        this.roomsCinema = b;      
     });    
-
-    this.rooms = this.dataService.rooms$;
-
-    // PROBLEMA
-    this.rooms.subscribe((b) => {
-      this.roomsCinema = b;
-    }); 
 
     this.typeOfTickets = this.dataService.typeOfTickets$;
 
@@ -131,6 +119,17 @@ export class DetailsPosterComponent implements OnInit {
     this.availableSeats.subscribe((res: any) => {
       this.availableSeats = res;
     });
+
+    this.structure = this.dataService.structure$;
+
+    this.structure.subscribe((a) => {
+
+      this.roomStruct = a;
+      
+      for (let index = 0; index < this.roomStruct.length; index++) {
+        this.roomStruct[index] = (this.roomStruct[index]) ? 'occupied' : 'free';
+      }
+    });    
   }
 
   //_______________________________________________________________________________________  
@@ -173,7 +172,7 @@ export class DetailsPosterComponent implements OnInit {
     this.cinemaId = cinemaId;
 
     //GET ROOMS
-    this.dataService.getRooms(this.selectedId, this.cinemaId);
+    this.dataService.getRooms(this.selectedId, this.cinemaId);    
 
     //GET TYPE OF TICKETS
     this.dataService.getTypeOfTickets(this.cinemaId);
@@ -184,6 +183,7 @@ export class DetailsPosterComponent implements OnInit {
   }
 
   clickSession(scheduleId) {
+
     this.scheduleId = scheduleId;
     this.stepper.selectedIndex = 3;
 
@@ -201,7 +201,6 @@ export class DetailsPosterComponent implements OnInit {
 
     var keys = Object.keys(this.tickets);
 
-    this.nextBtn = 'block';
 
     this.add = 0;
     for (var key of keys) {
@@ -213,6 +212,11 @@ export class DetailsPosterComponent implements OnInit {
         this.alertQtd = 'block';
       }
     }
+    if(this.add>0){
+    this.nextBtn = 'block';
+    }else{
+    this.nextBtn = 'none';
+    }    
   }
 
   clickNext() {
@@ -220,8 +224,8 @@ export class DetailsPosterComponent implements OnInit {
     this.seatsToChoose = this.add;    
   }
 
-  clickRoom(roomId) { 
-    
+  clickRoom(roomId) {    
+
     //GET STRUCTURE
     this.dataService.getStructure(this.cinemaId, this.selectedId, this.scheduleId);
 
@@ -230,28 +234,32 @@ export class DetailsPosterComponent implements OnInit {
     this.roomId = roomId;
 
     this.roomPosition = 0;
-    
-    for (var key of this.roomsCinema) {
-             
-      if (key.id == this.roomId) {
-        
-        return this.roomPosition;
-      } else {        
-        this.roomPosition += ((key.numberOfSeatsPerQueue * key.numberOfQueues));
+    this.takeRoomPositions = 0;
+
+    if (this.roomsCinema!==undefined) {     
+
+      for (var key of this.roomsCinema) {
+        if (key.id > this.roomId) {
+          this.takeRoomPositions += ((key.numberOfSeatsPerQueue * key.numberOfQueues));
+        }
       }
 
-      if(key.id > this.roomId){
-        this.takeRoomPositions += ((key.numberOfSeatsPerQueue * key.numberOfQueues));
+      for (var key of this.roomsCinema) {
+        if (key.id == this.roomId) {
+          return this.roomPosition;
+        } else {
+          this.roomPosition += ((key.numberOfSeatsPerQueue * key.numberOfQueues));
+        }
       }
-    } 
-
+     
+    }
   }
 
   getStructure(i, j) {    
     if (this.roomStruct !== undefined) {
       let position = '' + i + j;
-        
-      return this.roomStruct[Number(this.roomPosition + position)];
+   
+      return this.roomStruct[(this.roomPosition + Number(position))];
     }
   }
 
@@ -262,7 +270,7 @@ export class DetailsPosterComponent implements OnInit {
       this.add--;
 
       let position = '' + i + j;
-      this.roomStruct[Number(this.roomPosition + position)] = 'reserved';
+      this.roomStruct[(this.roomPosition + Number(position))] = 'reserved';
       if (this.add == 0) {
         this.seatsBtn = 'block';
       }
@@ -274,7 +282,7 @@ export class DetailsPosterComponent implements OnInit {
     if (this.add >= 0) {
       this.add++;
       let position = '' + i + j;
-      this.roomStruct[Number(this.roomPosition + position)] = 'free';
+      this.roomStruct[(this.roomPosition + Number(position))] = 'free';
     }
 
     if (this.add == this.seatsToChoose) {
@@ -286,20 +294,20 @@ export class DetailsPosterComponent implements OnInit {
   }
 
   clickforLast() {
-    this.stepper.selectedIndex = 5;
+    this.stepper.selectedIndex = 5
   }
 
   postInformation() {
 
-    //POST SEATS INFORMATION
+    //POST SEATS INFORMATION     
 
-    for (let index = +this.roomPosition; index < this.roomStruct.length-this.takeRoomPositions; index++) {
+    for (let index = +this.roomPosition; index < this.roomStruct.length - this.takeRoomPositions; index++) {
 
       if (this.roomStruct[index] == "free") {
         this.postRoomStructure[index] = false;
       } else {
         this.postRoomStructure[index] = true;
-      }
+      }      
 
     }
 
@@ -332,7 +340,8 @@ export class DetailsPosterComponent implements OnInit {
                 this.roomTicket = new Room();
 
                 this.postTicket.room = this.roomsCinema[i];
-                this.postTicket.typeOfTicket = this.tpOfTickets[j];
+                this.postTicket.typeOfTicket = this.tpOfTickets[j];           
+                
 
                 //   this.dataService.postTickets(this.postTicket).subscribe((res)=>{
                 //   console.log(res);

@@ -25,7 +25,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     DetailsPremiereComponent,
     NotfoundComponent,
     ScheduleDayPipe,
-    StructurePipePipe, 
+    StructurePipePipe,
   ],
   imports: [
     BrowserModule,
