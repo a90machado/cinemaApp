@@ -11,6 +11,7 @@ import { TypeOfTicket } from '../../models/typeOfTicket';
 import { Schedule } from '../../models/schedule';
 import { TicketService } from '../../services/ticket.service';
 import * as emailjs from 'emailjs-com';
+import { ScheduleService } from '../../services/schedule.service';
 
 
 @Component({
@@ -86,6 +87,7 @@ export class DetailsPosterComponent implements OnInit {
     private dataService: DataService,
     public datepipe: DatePipe,
     private ticketService: TicketService,
+    private scheduleService: ScheduleService
   ) {
     this.route.paramMap.subscribe(
       params => {
@@ -315,16 +317,18 @@ export class DetailsPosterComponent implements OnInit {
     this.stepper.selectedIndex = 5
   }
 
-  // sendTicket() {
-  //   emailjs.send('gmail', 'template_tga2n5Oz', this.email, 'user_i7ypDAjWJwNDhPVXUO4Zz')
-  //     .then((response) => {
-  //       console.log('SUCCESS!', response.status, response.text);
-  //     }, (err) => {
-  //       console.log('FAILED...', err);
-  //     });
-  // }
+  sendTicket() {
+    emailjs.send('gmail', 'template_tga2n5Oz', this.email, 'user_i7ypDAjWJwNDhPVXUO4Zz')
+      .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+      }, (err) => {
+        console.log('FAILED...', err);
+      });
+  }
 
   postInformation() {
+
+    // sendTicket();
 
     //POST SEATS INFORMATION     
 
@@ -346,10 +350,11 @@ export class DetailsPosterComponent implements OnInit {
 
     this.schedule = new Schedule();
     this.schedule.id = this.scheduleId;
-    this.schedule.structure = this.postStructure;    
+    this.schedule.structure = this.postStructure; 
+    
+    console.log(this.schedule);
 
-    // this.dataService.postStructure(this.schedule);
-
+    this.scheduleService.postStructure(this.schedule, this.roomId);
 
     //POST TICKET
 
@@ -377,7 +382,7 @@ export class DetailsPosterComponent implements OnInit {
                 this.postTicket.room = this.roomsCinema[i];
                 this.postTicket.typeOfTicket = this.typeTicket;
 
-                this.ticketService.postTicket(this.postTicket);               
+                //this.ticketService.postTicket(this.postTicket);               
 
               }
             }

@@ -17,8 +17,15 @@ export class ScheduleService {
 
   }
 
-  public postStructure(schedule){
-    return this.httpClient.put('http://localhost:8080/CinemaTicketSystem/api/schedule/update',schedule);
+  public postStructure(schedule, roomId){
+    return this.httpClient.put('http://localhost:8080/CinemaTicketSystem/api/schedule/'+roomId,schedule).subscribe( (res) => {
+      // on sucess without return
+      console.log(res);      
+      }, err => {
+      // on error
+        console.log(err);
+      }
+    )
   }
  
 }
