@@ -10,7 +10,7 @@ export class MovieService {
 
   public getMovies(){
     return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/movie');
-  }  
+  } 
  
   public getSchedulefromRoom(id){
     return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/movie/room/schedules/'+id)

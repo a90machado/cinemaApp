@@ -5,7 +5,8 @@ export class Room{
     'cinema': Cinema;
     'movie': Movie;
     'numberOfQueues': number;
-	'numberOfSeatsPerQueue': number;
+    'numberOfSeatsPerQueue': number;
+    
     
     constructor(data?: any){
         Object.assign(this,data);

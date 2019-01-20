@@ -91,19 +91,19 @@
               <td>
                 <mat-select name="quantity" id="quantity" placeholder="Select Quantity">
                   <mat-option value="0" (click)=" clickQuantity(0,row.id)">
-                      Select Quantity
-                    </mat-option>
+                    Select Quantity
+                  </mat-option>
                   <mat-option *ngFor="let quantity of quantities" value="{{selectedQuantity}}" (click)=" clickQuantity(quantity,row.id)">
                     {{quantity}}
                   </mat-option>
                 </mat-select>
               </td>
             </tr>
-            
+
             Available Seats: {{availableSeats}}
-             
-            Tickets Selected: {{add}}  
-            
+
+            Tickets Selected: {{add}}
+
             <p [ngStyle]="{'display': alertQtd}">Number of tickets is above the available seats</p>
           </tbody>
         </table>
@@ -118,24 +118,65 @@
         </mat-option>
       </mat-select>
       <table id="structure" class="table" [ngClass]='theme'>
-          <thead>
-          </thead>
-          <tbody>
-            <tr *ngFor="let queue of rooms | async | structurePipe:roomId:1; let i = index">
-              <td id="colStructure" *ngFor="let seats of rooms | async | structurePipe:roomId:2; let j = index">
-                <i *ngIf="getStructure(i,j)=='free'"  class="material-icons" (click)="reserveSeat(i,j)">event_seat</i>
-                <i *ngIf="getStructure(i,j)=='occupied'" class="material-icons">account_box</i>
-                <i *ngIf="getStructure(i,j)=='reserved'" class="material-icons" (click)="unreserveSeat(i,j)">check_circle</i>
-              </td>
-            </tr>           
-          </tbody>
+        <thead>
+        </thead>
+        <tbody>
+          <tr *ngFor="let queue of rooms | async | structurePipe:roomId:1; let i = index">
+            <td id="colStructure" *ngFor="let seats of rooms | async | structurePipe:roomId:2; let j = index">
+              <i *ngIf="getStructure(i,j)=='free'" class="material-icons" (click)="reserveSeat(i,j)">event_seat</i>
+              <i *ngIf="getStructure(i,j)=='occupied'" class="material-icons">account_box</i>
+              <i *ngIf="getStructure(i,j)=='reserved'" class="material-icons" (click)="unreserveSeat(i,j)">check_circle</i>
+            </td>
+          </tr>
+        </tbody>
       </table>
-        Seats to Choose: {{add}}
-        <button [ngStyle]="{'display': seatsBtn}" (click)="clickforLast()">Next</button>  
+      Seats to Choose: {{add}}
+      <button [ngStyle]="{'display': seatsBtn}" (click)="clickforLast()">Next</button>
     </mat-step>
-    <mat-step>
+    <mat-step> 
       <ng-template matStepLabel><b>Purchase</b></ng-template>
-      <button (click)="postInformation()">Finnish Process</button>  
+      <!-- Email Form -->
+    <form #formContact="ngForm" (ngSubmit)="postInformation()" class="">
+        <div class="d-flex flex-row">
+          <!-- Name Field -->
+          <div class="form-group" [class.is-invalid]="name.touched && name.invalid" [class.is-valid]="name.valid">
+            <div class="icon">
+              <i class="fas fa-user-tie"></i>
+              <input id="name" name="name" [(ngModel)]="email.name" type="text" class="form-control"
+                placeholder="Name" required minlength="3" pattern="[a-zA-Z ]*" #name="ngModel">
+            </div>
+            <span class="form-text" *ngIf="name.touched && name?.errors?.required">
+              Name is required
+            </span>
+            <span class="form-text" *ngIf="name.touched && name?.errors?.pattern">
+              Only text is available
+            </span>
+            <span class="form-text" *ngIf="name.touched && !name?.errors?.pattern && name?.errors?.minlength">
+              Name required three caractheres minimum
+            </span>
+          </div>
+          <!-- Email Field -->
+          <div class="form-group" [class.is-invalid]="email.touched && email.invalid" [class.is-valid]="email.valid">
+            <div class="icon">
+              <i class="fas fa-envelope"></i>
+              <input id="email" name="email" type="text" [(ngModel)]="email.email" type="text" class="form-control"
+                placeholder="Email" required email #reply_to="ngModel">
+            </div>
+            <span class="form-text" *ngIf="email.touched && email?.errors?.required">
+              Email is required
+            </span>
+            <span class="form-text" *ngIf="email.touched && email?.errors?.email">
+              Email is invalid
+            </span>
+          </div>
+        </div>
+        <!-- Submit Action -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary btnSubmit" [disabled]="formContact.invalid">{{(formContact.invalid)?
+            'Please fill information' : 'Send'}}</button>
+        </div>
+      </form>
     </mat-step>
   </mat-horizontal-stepper>
+
 </div>

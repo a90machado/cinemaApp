@@ -15,6 +15,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { ScheduleDayPipe } from './_shared/components/details-poster/schedule-day.pipe';
 import { StructurePipePipe } from './_shared/components/details-poster/structure-pipe.pipe';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    AngularFontAwesomeModule       
+    AngularFontAwesomeModule,
+    MatCardModule       
   ],
   entryComponents: [],
   providers: [DatePipe],

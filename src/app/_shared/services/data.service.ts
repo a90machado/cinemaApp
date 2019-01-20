@@ -16,21 +16,33 @@ export class DataService {
   private movies: any[];
   public schedules$: ReplaySubject<any[]> = new ReplaySubject(1);
   public cinemas$: ReplaySubject<any[]> = new ReplaySubject(1);
+  public allCinemas$:ReplaySubject<any[]> = new ReplaySubject(1);
+  public cinemaMovies$: ReplaySubject<any[]> = new ReplaySubject(1);
   public typeOfTickets$: ReplaySubject<any[]> = new ReplaySubject(1);
   public exibitionDays$: ReplaySubject<any[]> = new ReplaySubject(1);
   public rooms$: ReplaySubject<any[]> = new ReplaySubject(1);
   public availableSeats$: ReplaySubject<any[]> = new ReplaySubject(1);
   public structure$: ReplaySubject<any[]> = new ReplaySubject(1);
 
-
   constructor(private _movieService: MovieService,
     private _cinemaService: CinemaService,
     private _typeOfTicketService: TypeOfTicketService,
     private _exibitionDaysService: ExibitionDayService,
     private _roomService: RoomService,
-    private _scheduleService: ScheduleService,
-    private _ticketService: TicketService) {
+    private _scheduleService: ScheduleService,) {
     this.updateMovies();
+  }
+
+  public allCinemas() {
+    this._cinemaService.allCinemas().subscribe((res: any) => {
+      this.allCinemas$.next(res);
+    });
+  }
+
+  public cinemaMovies(id) {
+    this._roomService.getCinemaMovies(id).subscribe((res: any) => {
+      this.cinemaMovies$.next(res);
+    });
   }
 
   public updateMovies() {
@@ -89,14 +101,6 @@ export class DataService {
     this._scheduleService.getStructure(idCinema, idMovie, idSchedule).subscribe((res: any) => {
       this.structure$.next(res);
     });
-  }
-
-  public postTickets(ticket) {
-    return this._ticketService.postTickets(ticket);
-  }
-
-  public postStructure(structure) {
-    return this._scheduleService.postStructure(structure);
   }
 
 }

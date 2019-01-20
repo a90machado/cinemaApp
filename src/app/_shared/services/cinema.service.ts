@@ -11,4 +11,8 @@ export class CinemaService {
   public getCinemas(id){
     return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/cinema/movie/'+id);
   }
+
+  public allCinemas(){
+    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/cinema');
+  }
 }

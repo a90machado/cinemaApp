@@ -1,7 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Movie } from '../_shared';
 import { DataService } from '../_shared/services';
-import { ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
 
 
@@ -13,16 +11,41 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   noPause = false;
-  movies$: ReplaySubject<Movie[]>;  
+  movies: any;
+  cinemas: any;
+  cinemaMovies: any;
+
+  containerAll='block';
+  containerCinema='none';
 
   constructor(  private _dataService: DataService,
                 private _router: Router ) {
-    this.movies$ = this._dataService.movies$;
+    this.movies = this._dataService.movies$;
+
+    this._dataService.allCinemas();
+    this.cinemas=this._dataService.allCinemas$;
+    
    }
 
-  ngOnInit() { }  
+  ngOnInit() { 
+    
+  }  
+
+  clickedCinema(cinemaId){
+    this._dataService.cinemaMovies(cinemaId);
+    this.cinemaMovies=this._dataService.cinemaMovies$;
+    this.containerAll='none';
+    this.containerCinema='block';
+  }
+
+  clickedAll(){
+    this.containerAll='block';
+    this.containerCinema='none';
+  }
 
   openDetails(movie){       
     this._router.navigate(['detailsposter',movie.id]);       
   }
+
+
 }

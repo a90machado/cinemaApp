@@ -12,4 +12,8 @@ export class RoomService {
     return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/room/movie/'+idMovie+'+'+idCinema)
 
   }
+
+  public getCinemaMovies(id){
+    return this.httpClient.get('http://localhost:8080/CinemaTicketSystem/api/room/cinema/movies/'+id);
+  }
 }
