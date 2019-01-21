@@ -40,7 +40,7 @@
     <mat-step [editable]="editable">
       <ng-template matStepLabel><b>Cinema</b></ng-template>
       <mat-select name="cinemas" id="cinemas" [(ngModel)]="cinemas" placeholder="Select Cinema">
-        <mat-option *ngFor="let cinema of cinemas | async" (click)="clickedCinema(cinema.id)">
+        <mat-option *ngFor="let cinema of cinemas | async" (click)="clickedCinema(cinema.name,cinema.id)">
           {{ cinema.name }}
         </mat-option>
       </mat-select>
@@ -93,7 +93,7 @@
                   <mat-option value="0" (click)=" clickQuantity(0,row.id)">
                     Select Quantity
                   </mat-option>
-                  <mat-option *ngFor="let quantity of quantities" value="{{selectedQuantity}}" (click)=" clickQuantity(quantity,row.id)">
+                  <mat-option *ngFor="let quantity of quantities" value="{{selectedQuantity}}" (click)=" clickQuantity(quantity,row.id,row.priceOfTicket)">
                     {{quantity}}
                   </mat-option>
                 </mat-select>
@@ -136,7 +136,7 @@
     <mat-step> 
       <ng-template matStepLabel><b>Purchase</b></ng-template>
       <!-- Email Form -->
-    <form #formContact="ngForm" (ngSubmit)="postInformation()" class="">
+    <form #formContact="ngForm" (ngSubmit)="postInformation(email.name,email.email)" class="">
         <div class="d-flex flex-row">
           <!-- Name Field -->
           <div class="form-group" [class.is-invalid]="name.touched && name.invalid" [class.is-valid]="name.valid">

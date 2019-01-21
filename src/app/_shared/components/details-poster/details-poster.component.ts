@@ -5,7 +5,6 @@ import { DataService } from '../../services';
 import { DatePipe } from '@angular/common';
 import { Movie } from '../..';
 import { Ticket } from '../../models/ticket';
-import { Cinema } from '../../models/cinema';
 import { Room } from '../../models/room';
 import { TypeOfTicket } from '../../models/typeOfTicket';
 import { Schedule } from '../../models/schedule';
@@ -54,18 +53,25 @@ export class DetailsPosterComponent implements OnInit {
   takeRoomPositions: number;
   count: number;
   postStructure: any = [];
+  cinemaName: string;
+  priceTicket= {};
+  totalPrice = 0;
+  totalQuantity = 0;
+  totalPriceToString: string;
+  totalQuantityToString: string;
+  allSeats: any =[];
 
   style = 'none';
   block = '';
   alertQtd = 'none';
   nextBtn = 'none';
   seatsBtn = 'none';
+  emailSeats = '';
 
   rommDisplay = false;
   editable = false;
   clickDisplay = false;
 
-  selectedQuantity = '';
   selectedRoom = '';
   iconSelect = false;
 
@@ -188,8 +194,9 @@ export class DetailsPosterComponent implements OnInit {
     }
   }
 
-  clickedCinema(cinemaId) {
+  clickedCinema(cinemaName,cinemaId) {
     this.cinemaId = cinemaId;
+    this.cinemaName = cinemaName;      
 
     //GET ROOMS
     this.dataService.getRooms(this.selectedId, this.cinemaId);
@@ -213,14 +220,13 @@ export class DetailsPosterComponent implements OnInit {
     this.quantities = [1, 2, 3, 4, 5, 6, 7, 8];
   }
 
-  clickQuantity(quantity, ticketTypeId) {
+  clickQuantity(quantity, ticketTypeId, priceTicket) {
 
-    this.selectedQuantity = quantity;
+    this.priceTicket[ticketTypeId] = +priceTicket;
 
     this.tickets[ticketTypeId] = +quantity;
 
     var keys = Object.keys(this.tickets);
-
 
     this.add = 0;
     for (var key of keys) {
@@ -237,6 +243,18 @@ export class DetailsPosterComponent implements OnInit {
     } else {
       this.nextBtn = 'none';
     }
+  }
+
+  calculatePriceAndQuantity(){
+    var keys = Object.keys(this.tickets);
+    
+    for(var key of keys){
+      this.totalPrice += this.tickets[key]*this.priceTicket[key];
+      this.totalQuantity += this.tickets[key];           
+    }
+
+    this.totalPriceToString=this.totalPrice+'';
+    this.totalQuantityToString=this.totalQuantity+'';
   }
 
   clickNext() {
@@ -291,6 +309,7 @@ export class DetailsPosterComponent implements OnInit {
 
       let position = '' + i + j;
       this.roomStruct[(this.roomPosition + Number(position))] = 'reserved';
+      this.allSeats[Number(position)]= 'queue ' + (i+1) + ' ' + 'seat ' + (Number(position)+1) + ' ';
       if (this.add == 0) {
         this.seatsBtn = 'block';
       }
@@ -303,6 +322,7 @@ export class DetailsPosterComponent implements OnInit {
       this.add++;
       let position = '' + i + j;
       this.roomStruct[(this.roomPosition + Number(position))] = 'free';
+      this.allSeats[Number(position)]='';
     }
 
     if (this.add == this.seatsToChoose) {
@@ -318,6 +338,7 @@ export class DetailsPosterComponent implements OnInit {
   }
 
   sendTicket() {
+
     emailjs.send('gmail', 'template_tga2n5Oz', this.email, 'user_i7ypDAjWJwNDhPVXUO4Zz')
       .then((response) => {
         console.log('SUCCESS!', response.status, response.text);
@@ -326,7 +347,27 @@ export class DetailsPosterComponent implements OnInit {
       });
   }
 
-  postInformation() {
+  postInformation(name,email) {
+    
+    this.calculatePriceAndQuantity();
+
+    var keys = Object.keys(this.allSeats);
+    for(var key of keys){     
+      if(this.allSeats[key]!=='undefined'){
+        this.emailSeats += this.allSeats[key];
+      }      
+    }    
+
+    this.email.cinema_name = this.cinemaName;
+    this.email.movie_title = this.selectedMovie.title;
+    this.email.name = name;
+    this.email.price = this.totalPriceToString;
+    this.email.quantity = this.totalQuantityToString;
+    this.email.seats = this.emailSeats;
+    // this.email.session = ;
+    this.email.to_email = email;
+
+    console.log('email',this.email);    
 
     // sendTicket();
 
@@ -350,11 +391,9 @@ export class DetailsPosterComponent implements OnInit {
 
     this.schedule = new Schedule();
     this.schedule.id = this.scheduleId;
-    this.schedule.structure = this.postStructure; 
+    this.schedule.structure = this.postStructure;     
     
-    console.log(this.schedule);
-
-    this.scheduleService.postStructure(this.schedule, this.roomId);
+    this.scheduleService.postStructure(this.schedule, this.roomId, this.totalQuantity);
 
     //POST TICKET
 
@@ -370,7 +409,6 @@ export class DetailsPosterComponent implements OnInit {
 
               if (this.tpOfTickets[j].id == key) {
 
-
                 this.postTicket = new Ticket();
                 this.typeTicket = new TypeOfTicket();
                 this.roomTicket = new Room();
@@ -382,7 +420,14 @@ export class DetailsPosterComponent implements OnInit {
                 this.postTicket.room = this.roomsCinema[i];
                 this.postTicket.typeOfTicket = this.typeTicket;
 
-                //this.ticketService.postTicket(this.postTicket);               
+               this.ticketService.postTicket(this.postTicket).subscribe( () => {
+                // on sucess without return  
+                this.router.navigate(['/home']);      
+                }, err => {
+                // on error
+                  console.log(err);
+                }
+              );               
 
               }
             }
@@ -390,7 +435,6 @@ export class DetailsPosterComponent implements OnInit {
         }
     }
 
-    //window.location.reload();
   }
 
 }

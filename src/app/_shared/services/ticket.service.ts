@@ -11,13 +11,7 @@ export class TicketService {
 
   public postTicket(ticket){   
 
-    return this.httpClient.post('http://localhost:8080/CinemaTicketSystem/api/ticket/new',ticket).subscribe( () => {
-      // on sucess without return
-      }, err => {
-      // on error
-        console.log(err);
-      }
-    )
+    return this.httpClient.post('http://localhost:8080/CinemaTicketSystem/api/ticket/new',ticket);
   }
     
 }
