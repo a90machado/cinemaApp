@@ -66,14 +66,16 @@ export class DetailsPosterComponent implements OnInit {
   alertQtd = 'none';
   nextBtn = 'none';
   seatsBtn = 'none';
-  emailSeats = '';
+  
 
   rommDisplay = false;
   editable = false;
   clickDisplay = false;
+  iconSelect = false;
 
   selectedRoom = '';
-  iconSelect = false;
+  emailSeats = '';
+  session = '';
 
   email = {
     name: '',
@@ -209,7 +211,9 @@ export class DetailsPosterComponent implements OnInit {
     this.stepper.selectedIndex = 2;
   }
 
-  clickSession(scheduleId) {
+  clickSession(scheduleId,dayOfWeek,day,sessionBegin) {
+
+   this.session=''+dayOfWeek+', '+day+' - '+this.dataForSelect(sessionBegin);
 
     this.scheduleId = scheduleId;
     this.stepper.selectedIndex = 3;
@@ -253,7 +257,7 @@ export class DetailsPosterComponent implements OnInit {
       this.totalQuantity += this.tickets[key];           
     }
 
-    this.totalPriceToString=this.totalPrice+'';
+    this.totalPriceToString=this.totalPrice+'$';
     this.totalQuantityToString=this.totalQuantity+'';
   }
 
@@ -309,7 +313,7 @@ export class DetailsPosterComponent implements OnInit {
 
       let position = '' + i + j;
       this.roomStruct[(this.roomPosition + Number(position))] = 'reserved';
-      this.allSeats[Number(position)]= 'queue ' + (i+1) + ' ' + 'seat ' + (Number(position)+1) + ' ';
+      this.allSeats[Number(position)]= 'queue ' + (i+1) + ' ' + 'seat ' + (Number(position)+1) + '; ';
       if (this.add == 0) {
         this.seatsBtn = 'block';
       }
@@ -340,8 +344,7 @@ export class DetailsPosterComponent implements OnInit {
   sendTicket() {
 
     emailjs.send('gmail', 'template_tga2n5Oz', this.email, 'user_i7ypDAjWJwNDhPVXUO4Zz')
-      .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
+      .then(() => {
       }, (err) => {
         console.log('FAILED...', err);
       });
@@ -364,12 +367,10 @@ export class DetailsPosterComponent implements OnInit {
     this.email.price = this.totalPriceToString;
     this.email.quantity = this.totalQuantityToString;
     this.email.seats = this.emailSeats;
-    // this.email.session = ;
-    this.email.to_email = email;
-
-    console.log('email',this.email);    
-
-    // sendTicket();
+    this.email.session = this.session;
+    this.email.to_email = email;  
+    
+    this.sendTicket();
 
     //POST SEATS INFORMATION     
 

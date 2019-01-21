@@ -60,7 +60,7 @@
                 Room {{room.id}}
               </td>
               <td>
-                <p id="pSchedule" *ngFor="let schedule of schedules | async | scheduleDay:exibitionDay" (click)="clickSession(schedule.id)">
+                <p id="pSchedule" *ngFor="let schedule of schedules | async | scheduleDay:exibitionDay" (click)="clickSession(schedule.id,exibitionDay.dayOfWeek,exibitionDay.day,schedule.sessionBegin)">
                   {{ dataForSelect(schedule.sessionBegin) }}
                 </p>
               </td>
