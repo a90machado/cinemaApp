@@ -344,7 +344,8 @@ export class DetailsPosterComponent implements OnInit {
   sendTicket() {
 
     emailjs.send('gmail', 'template_tga2n5Oz', this.email, 'user_i7ypDAjWJwNDhPVXUO4Zz')
-      .then(() => {
+      .then((res) => {
+        window.location.reload();   
       }, (err) => {
         console.log('FAILED...', err);
       });
@@ -369,8 +370,6 @@ export class DetailsPosterComponent implements OnInit {
     this.email.seats = this.emailSeats;
     this.email.session = this.session;
     this.email.to_email = email;  
-    
-    this.sendTicket();
 
     //POST SEATS INFORMATION     
 
@@ -423,7 +422,6 @@ export class DetailsPosterComponent implements OnInit {
 
                this.ticketService.postTicket(this.postTicket).subscribe( () => {
                 // on sucess without return  
-                this.router.navigate(['/home']);      
                 }, err => {
                 // on error
                   console.log(err);
@@ -435,6 +433,8 @@ export class DetailsPosterComponent implements OnInit {
           }
         }
     }
+    //SEND EMAIL
+    //this.sendTicket();
 
   }
 

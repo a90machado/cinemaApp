@@ -20,6 +20,9 @@ export class HomeComponent implements OnInit {
 
   constructor(  private _dataService: DataService,
                 private _router: Router ) {
+
+          
+
     this.movies = this._dataService.movies$;
 
     this._dataService.allCinemas();
