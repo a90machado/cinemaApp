@@ -4,14 +4,8 @@
       <div class="text-center">
         <img class="card-img-top" style="height: 20rem;" src="{{ selectedMovie.image }}" alt="Card image cap">
         <br>
-        <div>
-          <button type="button" [ngStyle]="{'display': block}" (click)="buyClick(stepper)" class="btn btn-secondary">Buy
-            Ticket</button>
-        </div>
-        <div class="text-center">
-          <button type="button" id="btnReset" [ngStyle]="{'display': style}" (click)="resetClick()" class="btn btn-secondary">Reset</button>
-        </div>
-      </div>
+          <button type="button" [ngStyle]="{'display': block}" (click)="buyClick(stepper)" class="btn btn-secondary">Buy Ticket</button>
+      </div>    
     </div>
     <div class="col-sm-12 col-md-7 col-lg-8">
       <div class="">
@@ -30,23 +24,27 @@
   </div>
 </div>
 
-<div [ngStyle]="{'display': style}">
+<div id="steps" [ngStyle]="{'display': style}">
   <hr>
   <mat-horizontal-stepper #stepper>
     <mat-step editable="false">
-      <ng-template matStepLabel><b>Movie</b></ng-template>
+      <ng-template matStepLabel ><b>Movie</b></ng-template>
       <label for="movie">{{ selectedMovie.title }}</label>
     </mat-step>
     <mat-step [editable]="editable">
-      <ng-template matStepLabel><b>Cinema</b></ng-template>
+      <ng-template class="text-center" matStepLabel><b>Cinema</b></ng-template>
+      <div id="cinemaPara" class="text-center"> <p> Please select your cinema </p> </div>  
+      <div class="text-center">
       <mat-select name="cinemas" id="cinemas" [(ngModel)]="cinemas" placeholder="Select Cinema">
         <mat-option *ngFor="let cinema of cinemas | async" (click)="clickedCinema(cinema.name,cinema.id)">
           {{ cinema.name }}
         </mat-option>
       </mat-select>
+    </div>   
     </mat-step>
     <mat-step [editable]="editable">
       <ng-template matStepLabel><b>Session</b></ng-template>
+      <div id="schedulesPara" class="text-center"> <p> Please select the schedule that best suits you </p> </div>  
       <div class="table-responsive">
         <table class="table" [ngClass]='theme'>
           <thead>
@@ -71,18 +69,33 @@
     </mat-step>
     <mat-step [editable]="editable">
       <ng-template matStepLabel><b>Ticket</b></ng-template>
-      <div class="table-responsive">
+      <div><p id="ticketsPara" class="text-center">Please choose the tickets</p></div>
+      <div id="ticketPadd" class="container-fluid text-center">
+          <div class="row">
+            <div class="col-sm-4 col-md-4 col-lg-3 text-center">
+                <div id="availableSeats"> Available Seats: {{availableSeats}} </div>
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-5 text-center">
+                <div id="selectTicket"> Tickets Selected: {{add}} </div> 
+            </div>
+            <div id="btnCenter" class="col-sm-4 col-md-4 col-lg-4" >
+                <button id="ticketBtn" [ngStyle]="{'display': nextBtn}" class="btn btn-secondary" (click)="clickNext()">Next</button>
+                <p id="seatsAlert" [ngStyle]="{'display': alertQtd}">Number of tickets is above the available seats</p>                   
+            </div>           
+          </div>
+      </div>
+      <div class="table-responsive">        
         <table class="table" [ngClass]='theme'>
-          <thead>
+          <thead  class="text-center">
             <tr>
               <th *ngFor="let col of header">
                 {{col}}
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="text-center">
             <tr *ngFor="let row of typeOfTickets | async">
-              <td>
+              <td class="text-left">
                 {{row.typeOfTicket}}
               </td>
               <td>
@@ -99,24 +112,34 @@
                 </mat-select>
               </td>
             </tr>
-
-            Available Seats: {{availableSeats}}
-
-            Tickets Selected: {{add}}
-
-            <p [ngStyle]="{'display': alertQtd}">Number of tickets is above the available seats</p>
           </tbody>
-        </table>
-        <button [ngStyle]="{'display': nextBtn}" (click)="clickNext()">Next</button>
+        </table>       
       </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel><b>Reserve Seat</b></ng-template>
+      <div><p id="roomsPara" class="text-center">Please choose a room and reserve your seat</p></div>
+      <div id="roomPadd" class="container-fluid">
+          <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-2 text-center">
+                <div [ngStyle]="{'display': roomInfo}" id="availableSeats">Seats to Choose: {{add}}</div>
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-6 text-center">               
+            </div>
+            <div class="col-sm-5 col-md-5 col-lg-4 text-rigth">
+                <button id="strucBtn" [ngStyle]="{'display': seatsBtn}" class="btn btn-secondary" (click)="clickforLast()">Next</button>
+            </div>           
+          </div>
+      </div>      
+      <div class="text-center">
       <mat-select [disabled]="rommDisplay" name="rooms" id="rooms" placeholder="Select room">
         <mat-option *ngFor="let room of rooms | async" value="{{selectedRoom}}" (click)="clickRoom(room.id)">
           Room {{room.id}}
         </mat-option>
       </mat-select>
+      </div>
+      <div [ngStyle]="{'display': roomInfo}" id="ecra"  class="text-center"></div>
+      <div id="roomStructure" class="text-center">
       <table id="structure" class="table" [ngClass]='theme'>
         <thead>
         </thead>
@@ -130,14 +153,13 @@
           </tr>
         </tbody>
       </table>
-      Seats to Choose: {{add}}
-      <button [ngStyle]="{'display': seatsBtn}" (click)="clickforLast()">Next</button>
+    </div>
     </mat-step>
     <mat-step> 
       <ng-template matStepLabel><b>Purchase</b></ng-template>
       <!-- Email Form -->
-    <form #formContact="ngForm" (ngSubmit)="postInformation(email.name,email.email)" class="">
-        <div class="d-flex flex-row">
+    <form #formContact="ngForm" (ngSubmit)="postInformation(email.name,email.email)" >
+        <div class="d-flex flex-row" >
           <!-- Name Field -->
           <div class="form-group" [class.is-invalid]="name.touched && name.invalid" [class.is-valid]="name.valid">
             <div class="icon">
@@ -158,7 +180,6 @@
           <!-- Email Field -->
           <div class="form-group" [class.is-invalid]="email.touched && email.invalid" [class.is-valid]="email.valid">
             <div class="icon">
-              <i class="fas fa-envelope"></i>
               <input id="email" name="email" type="text" [(ngModel)]="email.email" type="text" class="form-control"
                 placeholder="Email" required email #reply_to="ngModel">
             </div>

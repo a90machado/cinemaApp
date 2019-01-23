@@ -1,6 +1,6 @@
 .details{
     margin-top: 2rem;
-    margin-left: 1rem;   
+    margin-left: 1rem;
 }
 
 img{   
@@ -8,8 +8,27 @@ img{
     height: 20rem;
 }
 
-button{
-    margin-top: 3rem;    
+.btn-secondary{
+    margin-top: 3rem;
+    background-color: rgb(232, 232, 241);  
+    border-color: rgb(241, 232, 232); 
+    box-shadow: 0px 10px 10px #2423235d;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+}
+
+#cinemaPara{
+    font-size: 25px;
+    margin-top: 15px;
+}
+
+#schedulesPara{
+    font-size: 25px;
+    margin-top: 15px;
 }
 
 #pSchedule{
@@ -17,18 +36,144 @@ button{
     text-decoration: underline;
 }
 
-#structure{
-    width: 30px;
+#cinemas{   
+    font-weight: bold;
+    font-size: 16px;
+    width: 200px;
+    height: 30px;
+    margin: auto;
+    text-align: center;
+    background-color: rgb(231, 221, 221);  
+    box-shadow: 0px 10px 10px #2423235d;
+}
+
+
+.table-responsive{
+    margin-top: 50px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#availableSeats, #selectTicket{
+    font-size: 18px;
+    font-weight: bold;
+    position: absolute;
+    bottom: 5%;
+}
+
+#ticketsPara{
+    font-size: 25px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+
+#seatsAlert{
+color: red;
+font-size: 20px;
+font-weight: bold;
+margin-top: 10px;
+}
+
+
+#quantity{
+    font-weight: bold;
+    font-size: 16px;
+    width: 200px;
+    height: 30px;
+    margin: auto;
+    text-align: center;
+    background-color: rgb(231, 221, 221);  
+    box-shadow: 0px 10px 10px #2423235d;
+}
+
+
+#rooms{
+    font-weight: bold;
+    font-size: 16px;
+    width: 200px;
+    height: 30px;
+    margin: auto;
+    text-align: center;
+    background-color: rgb(231, 221, 221);  
+    box-shadow: 0px 10px 10px #2423235d;
+}
+
+#roomsPara{
+    font-size: 25px;
+    margin-top: 15px;
 }
 
 #colStructure{
-    border: none;    
+    border: none;
+    height: 80px;
+    width: 80px;    
 }
 
-#btnSeats, #btnSeats img{
-    width: 40px;
-    height: 40px;
+#structure{
+    width: 50%;
+    margin: auto;
+    
 }
+
+#roomStructure{
+    margin-top: 40px;
+    align-content: center;
+}
+
+#ecra{
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    height: 3px;
+    width: 300px;
+    background-color: black;
+}
+
+
+#strucBtn{
+    
+    margin-top: 3rem;
+    background-color: rgb(232, 232, 241);  
+    border-color: rgb(241, 232, 232); 
+    box-shadow: 0px 10px 10px #2423235d;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    
+}
+
+#name{
+    width: 300px;
+}
+
+#email{
+    width: 300px;
+}
+
+.form{
+margin: auto;
+}
+
+.btnSubmit{
+    margin-top: 3rem;
+    background-color: rgb(232, 232, 241);  
+    border-color: rgb(241, 232, 232); 
+    box-shadow: 0px 10px 10px #2423235d;
+    width: 300px;
+    height: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+}
+
+
+
+
 
 
 

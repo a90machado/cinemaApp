@@ -1,0 +1,17 @@
+.navbar{
+    height: 100px;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px 10px 10px #2423235d;
+    z-index: 1;
+}
+
+img{
+    margin-left: 20px;
+    height: 80px;
+    width: 80%;
+    padding: 10px; 
+
+}
+
+

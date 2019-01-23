@@ -1,6 +1,71 @@
-.premieres{
-    padding-top: 2.5rem;
+img{
+    height: 350px;
+    width: 80%;
+    margin: auto;
 }
+
+.cinemaDrop{
+    margin-left: 25px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+#cinemas{
+    text-align: center;
+    height: 30px;
+    width: 200px;   
+    font-weight: bold;
+    background-color: white;
+    box-shadow: 0px 10px 10px #2423235d;
+    font-size: 16px;
+    margin-left: 40px;
+}
+
 .containerCards{
-    padding-top: 2rem;
+    margin-left: 30px;
+    border: none;
+}
+
+.card:hover .overlay {
+    opacity: 1;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008CBA;
+}
+
+.text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+  
+
+.card-img-top{
+    height: 100%;
+    width: 100%;
+}
+
+.card{
+    width: 250px;
+    height: 350px;
+    margin-left: 50px;
+    margin-bottom: 20px;
+    border-color: rgb(67, 152, 175);
+
 }

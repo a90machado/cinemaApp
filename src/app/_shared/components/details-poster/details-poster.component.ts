@@ -76,6 +76,7 @@ export class DetailsPosterComponent implements OnInit {
   selectedRoom = '';
   emailSeats = '';
   session = '';
+  roomInfo = 'none';
 
   email = {
     name: '',
@@ -172,11 +173,6 @@ export class DetailsPosterComponent implements OnInit {
     this.block = 'none';
   }
 
-  resetClick() {
-    // this.router.navigateByUrl('/RefrshComponent', {skipLocationChange: true}).then(()=>
-    // this.router.navigate(["detailsposter/"+this.selectedId])); 
-  }
-
   dataForSelect(session) {
 
     if (session / 60 > 1 && session % 60 == 0) {
@@ -221,11 +217,12 @@ export class DetailsPosterComponent implements OnInit {
     //GET AVAILABLE SEATS
     this.dataService.getAvailableSeats(this.cinemaId, this.selectedId, this.scheduleId);
 
-    this.quantities = [1, 2, 3, 4, 5, 6, 7, 8];
+    this.quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   }
 
   clickQuantity(quantity, ticketTypeId, priceTicket) {
-
+    this.alertQtd = 'none';
+    
     this.priceTicket[ticketTypeId] = +priceTicket;
 
     this.tickets[ticketTypeId] = +quantity;
@@ -268,6 +265,8 @@ export class DetailsPosterComponent implements OnInit {
 
   clickRoom(roomId) {
 
+    this.roomInfo='block';
+    
     //GET STRUCTURE
     this.dataService.getStructure(this.cinemaId, this.selectedId, this.scheduleId);
 
@@ -434,7 +433,7 @@ export class DetailsPosterComponent implements OnInit {
         }
     }
     //SEND EMAIL
-    //this.sendTicket();
+    this.sendTicket();
 
   }
 
